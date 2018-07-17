@@ -1,0 +1,43 @@
+/* Container */
+#home-container {display:block;width:90%;height:80vh;min-height:80%;margin:2% 5% 0% 5%;background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);transition:all 0.3s cubic-bezier(.25,.8,.25,1);}
+#home-container:hover {box-shadow:0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);}
+
+/* Button Add Todo Task*/
+#add-todo-button {overflow:hidden;display:block;border-radius:100%;background:#47DF9A;text-align:center;vertical-align:middle;bottom:80px;right:calc(50% - 40px);position:absolute;height:100px;width:100px;border:none;cursor:pointer;box-shadow:0 11px 20px rgba(0,0,0,0.13), 0 1px 2px rgba(0,0,0,0.24);}
+	#add-todo-button i {color:#fff;display:block;font-size:90px;font-weight:100;line-height:12px;}
+
+/* Unlogged user content */
+.list-unlogged {text-align:center;}
+	.list-unlogged img {margin-top:70px;width:190px;opacity:0.1;}
+	.list-unlogged h4 {text-align:center;color:#444;margin-top:30px;}
+	.list-unlogged p {text-align:center;color:#444;}
+	.page .list-unlogged button.primary {border-radius:20px;margin-top:30px;padding:0 50px;font-size:18px;}
+
+/* Empty list */
+.list-empty p {text-align:center;color:#999;font-size:14px;letter-spacing:.7px;}
+
+/* List with sortable todo task rows */
+#list-container {padding:2px;}
+	#list-container header {border-bottom:4px dashed #f6f6f6;position:relative;margin-bottom:10px;padding-bottom:10px;}
+		#list-container header h2 {text-align:left;padding:15px 0 10px 24px;display:inline-block;width:30%;line-height:27px;}
+		#list-container header div {position:relative;display:inline-block;width:69%;}
+			#list-container header div input {background:#f6f6f6;border:none;border-radius:30px;padding:0 43px;color:#555;}
+			#list-container header div i {position:absolute;left:15px;top:14px;font-size:15px;opacity:.3;}
+	#sortable { list-style-type:none;margin:0;padding:0;width:100%;position:relative;}
+	  #sortable li {position:relative;margin:0 15px 12px 15px;padding:10px;padding-left:1.5em;font-size:1.4em;box-shadow:0 2px 10px rgba(0,0,0,0.04),0 2px 5px rgba(0,0,0,0.04);height:40px;border-radius:30px;background:#fefefe;cursor:move;transition: all 0.3s cubic-bezier(.25,.8,.25,1);}
+		#sortable li:hover {box-shadow:0 14px 28px rgba(0,0,0,0.05), 0 10px 10px rgba(0,0,0,0.06);}
+			#sortable li.done a.editable {opacity:0.2;text-decoration:line-through;}
+			#sortable li.done a.delete {opacity:0.4;}
+			#sortable li a.delete {background:rgb(255,90,95);display:inline-block;font-size:21px;font-weight:bold;border-radius:100%;width:29px;height:29px;position:absolute;left:5px;top:8px;text-align:center;color:#fff;cursor:pointer;z-index:10;}
+			#sortable li a.editable {font-size:17px;font-weight:600;padding:4px;display:inline-block;position:absolute;width:78%;left:50px;top:5px;word-wrap:break-word;max-height:31px;overflow:hidden;line-height:14px;}
+				#sortable li a input {font-size:17px;font-weight:600;position:absolute;top:2px;left:-5px;width:78%;height:20px;border:none;padding:15px;opacity:1;color:rgb(51,191,126);}
+
+
+
+@media all and (max-width:640px) {
+	#list-container header {padding-bottom:0;}
+		#list-container header h2 {font-size:15px;margin:7px 0 16px 0;}
+	#add-todo-button {width:85px;height:85px;bottom:18px;}
+	#sortable li a.editable {left:33px;padding:2px 0 2px 10px;font-size:14px;width:57%;}
+	#sortable li a input {width:100%;}
+}

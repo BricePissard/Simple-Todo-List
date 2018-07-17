@@ -1,0 +1,15 @@
+*.class
+*.pyc
+*.pyo
+
+# Mac OS X dumps these all over the place.
+.DS_Store
+
+# ANT and JMeter log files (in build/**/*)
+*.log
+
+# Atom SSH sync config file: https://atom.io/packages/remote-ftp
+.ftpconfig
+
+
+/libs/vendor/**/.git
