@@ -160,50 +160,64 @@ define( 'DB_HOST_LOCAL',   '127.0.0.1' );    // Your DEV server IP,  (local) > h
 ```
 
 
+
+
 ## 2 - Choose of technologies
 
 ### 2.1 - Problem approach
 
+### 2.1.1 - Postulate
 The postulate of this program is to deliver in one or two days a functional application
 that can be deployed easily in any server and that can be read by any developer without
 any specific framework or environment knowledge.
 
+### 2.1.2 - JS Dependencies
 The only dependencies of for program are on jQuery: jQuery, jQuery-ui, jQuery.bPopup and jQuery.toggles
 The server-side code don't depends on a 3rd party Framework.
 The server-side code have been build as Web-Service oriented, to allows the deployment
 of the proprietary API in another server.  
 
+### 2.1.3 - Design Paterns and Hacking preventions
 Both of the code on frontend and backend respect the main programing Design Paterns.
 Several basic technics have been made to prevent hacking (SQL-injection, cross-domain attacks,...).
 
+### 2.1.4 - Local API as Web-Services
 This program consist on a single page Web-App where all the interaction with the server are made through   
 API calls to local Web-Services.
 This approach allows to separate the backend from the frontend and makes it easier
 future development or language migrations.
 
-Several features have to be created from the beginning otherwise later they require a
-more complex development in the future.
+### 2.1.5 - Create more than necessary from the beginning
+Several features have to be created from the beginning otherwise, later, they require a
+more complex development.
 The development of this program have been though from the beginning as it will have
-future development on it, so it have been started with account support (sign-in/login/logout).
+future development on it, so it have been started with:
+-   Accounts support (sign-in/login/logout).
+-   Simple API interaction between JS Web-App and PHP Backend.
+-   All the code from backend to frontend is Object-Oriented.
 
 
 
 ### 2.2 - Choose of language / Framework
 
-The languages (PHP,JS,MySQL) have been chosen based on their popularity and open-source status,
-to facilitate the development (communities, external developers).
+#### 2.2.1 - Languages selected
+The languages (PHP,JS,MySQL) have been chosen based on their popularity and their open-source status,
+to facilitate the development (thaks to communities and external developers).
 
+#### 2.2.2 - No Framework on Backend
 It have been deliberately chosen NOT to select a PHP backend Framework
 (like Laravel, Symphony or ZEND) for this program.
 This allows to reduce drastically the size of the software as to increase its readability.
 Removing the use of a third-party Framework requires a deep understanding of the MVC and
 other Design Paterns.
 
+#### 2.2.2 - No Full-JS Web-App
 It have been deliberately chosen NOT to create this app in a single JS Web-App using Node.js and ReactJS,
 for better readability, to simplify the deployment, for future development
 (using Java for the backend, place the Web-Services in another server or behind a Load-Balancer,...).
 It also reduce the number of lines of the code and the weight of the program.
 
+#### 2.2.3 - No External Tools
 It have been deliberately chosen NOT to use several external tools that can simplify
 the development or optimize the code because it was on the purpose of this program.
 -   CSS: LESS/SASS YUI Compressor.
@@ -239,6 +253,8 @@ the structure of the Models of the current software make this migration very eas
 #### 2.3.4 - Migration from PHP > Java
 A very large development of this Web-App should end in the migration to a Java backend.
 The current development of the Web-App make this migration very easy.
+Any further development that implies the work of different developers on the same
+software require the use of a well known Framework (either in PHP or Java).
 
 #### 2.3.5 - Migration from Apache to Node.js, Gnix or Cloud Based
 A large development of this Web-App should end in the migration to another type of
