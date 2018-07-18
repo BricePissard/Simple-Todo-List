@@ -1,8 +1,21 @@
-<?php namespace Stripe; if(!AUTHORIZED){die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);}
+<?php
+namespace Stripe;
+
+if (!AUTHORIZED) {
+	die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);
+}
+
 class Elements extends \Stripe\View
 {
-	function __construct(){}
+	public function __construct(){}
 
+		/**
+		 * Get a Error Block
+		 *
+		 * @param {string} $message Message to set
+		 * @param {boolean} $is_visible Is current block visible, TRUE for yes, FALSE for no.
+		 * @return {void}
+		 */
 	public static function get_error_block( $message = '', $is_visible = FALSE )
 	{
 		?><div class="error-bloc info-popup" <?=(($is_visible==FALSE)?"style='display:none;'":'');?>><?php
@@ -14,6 +27,13 @@ class Elements extends \Stripe\View
 		?></div><?php
 	}
 
+	/**
+	 * Get a Valid Block
+	 *
+	 * @param {string} $message Message to set
+	 * @param {boolean} $is_visible Is current block visible, TRUE for yes, FALSE for no.
+	 * @return {void}
+	 */
 	public static function get_valid_block( $message = '', $is_visible = FALSE )
 	{
 		?><div class="valid-bloc info-popup" <?=(($is_visible==FALSE)?"style='display:none;'":'');?>><?php
@@ -29,11 +49,13 @@ class Elements extends \Stripe\View
 	 * Toggle sliding element.
 	 * MUST be initialized with the javascript method: stripe.set_toggle();
 	 * @see https://github.com/simontabor/jquery-toggles
+	 *
+	 * @param {array} Data to set.
+	 * @return {string}
 	 */
 	public static function get_button_checkbox( Array $DATA_ = [] )
 	{
 		if ( empty( $DATA_ ) ) { return; }
-
 		$button_checkbox =
 		"<div class=\"toggle ".( ( $DATA_['checked'] == TRUE ) ? 'toggle-on' : 'toggle-off' ). "\" " .
 			"id=\"". $DATA_['id']."-div\" ".
@@ -46,12 +68,11 @@ class Elements extends \Stripe\View
 		"</div>".
 		"<input ";
 
-			if ( isset( $DATA_[ 'onchecked' ] ) && isset( $DATA_[ 'onunchecked' ] ) )
-			{
-				$button_checkbox .= " onchange=\"if(jQuery(this).is(':checked')){".$DATA_['onchecked']." jQuery('#".$DATA_['id']."-div .toggle-blob').css({border:'3px solid rgba(135,144,193,1)'}); jQuery('#".$DATA_['id']."-div .toggle-on').css({background:'rgba(135,144,193,1)'}); }else{ ".$DATA_['onunchecked']." jQuery('#".$DATA_['id']."-div .toggle-blob').css({border:'3px solid rgba(135,144,193,.2)'}); jQuery('#".$DATA_['id']."-div .toggle-on').css({background:'rgba(135,144,193,.2)'});};\" ";
-			}
+		if ( isset( $DATA_[ 'onchecked' ] ) && isset( $DATA_[ 'onunchecked' ] ) ) {
+			$button_checkbox .= " onchange=\"if(jQuery(this).is(':checked')){".$DATA_['onchecked']." jQuery('#".$DATA_['id']."-div .toggle-blob').css({border:'3px solid rgba(135,144,193,1)'}); jQuery('#".$DATA_['id']."-div .toggle-on').css({background:'rgba(135,144,193,1)'}); }else{ ".$DATA_['onunchecked']." jQuery('#".$DATA_['id']."-div .toggle-blob').css({border:'3px solid rgba(135,144,193,.2)'}); jQuery('#".$DATA_['id']."-div .toggle-on').css({background:'rgba(135,144,193,.2)'});};\" ";
+		}
 
-			$button_checkbox .=
+		$button_checkbox .=
 			" type=\"checkbox\" ".
 			" class=\"".$DATA_['id']."-checkbox input-checkbox\" ".
 			" name=\"".$DATA_['id']."\" ".
@@ -61,7 +82,10 @@ class Elements extends \Stripe\View
 	}
 
 	/**
+	 * Get SVG Loader animation.
 	 * @see http://loading.io/
+	 *
+	 * @return {string}
 	 */
 	public static function get_loader_SVG()
 	{

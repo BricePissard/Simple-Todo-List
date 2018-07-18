@@ -25,14 +25,13 @@ abstract class View
 		$page = ucfirst( strtolower( $page ) );
 		$class_name = "\\Stripe\\" . $page . "_view";
 
-    if ( class_exists( $class_name ) === TRUE )
-		{
+    if ( class_exists( $class_name ) === TRUE ) {
 			$view = new $class_name;
 	   	$view::output();
     }
 	}
 
-	protected static function page( $page_type = 'TODOLIST', $title, $description = '', $keywords_ = [] )
+	protected static function page($page_type='TODOLIST', $title, $description='', $keywords_=[])
 	{
 		ob_start(); // used before redirection Headers to remove pre-printed content
 
@@ -87,9 +86,13 @@ abstract class View
 	}
 
 	/**
+	 * Get the <boby> or </body> of the page with its subsidiary elements.
 	 *
+	 * @param {string} $type cans be 'in' or 'out'.
+	 * @param {string} $page_type name of the current page displayed.
+	 * @return {string}
 	 */
-	protected static function body( $type='in', $page_type = 'TODOLIST' )
+	protected static function body($type='in', $page_type='TODOLIST')
 	{
 		switch ( $type )
 		{
@@ -98,11 +101,8 @@ abstract class View
 				ob_start();
 				Popup::get_container();
 				$popup_container = ob_get_clean();
-
 				return "<body data-page='" . $page_type . "'>".
 				  $popup_container;
-					break;
-
 			case 'out' :
 				return
 					"<a class='scrollup' style='display:none;'><i class='hc-angle-up'></i></a>" .
@@ -110,14 +110,16 @@ abstract class View
 					self::get_js_dependencies( $page_type ) .
 				"</body>".
 			"</html>";
-			break;
 		}
 	}
 
 	/**
+	 * Get the page main <header>
 	 *
+	 * @param {string} $page_type name of the current page displayed.
+	 * @return {view}
 	 */
-	protected static function header( $page_type = 'TODOLIST' )
+	protected static function header($page_type='TODOLIST')
 	{
 		?><header class="strip_bg"><?php
 			?><div class="contnr"><?php
@@ -133,7 +135,7 @@ abstract class View
 	/**
 	 *
 	 */
-	protected static function footer( $isEmailing = TRUE )
+	protected static function footer()
 	{
 		?><footer class="hc_footer"><?php
 			?><div class="contC"><?php

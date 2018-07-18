@@ -1,4 +1,10 @@
-<?php namespace Stripe; if(!AUTHORIZED){die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);}
+<?php
+namespace Stripe;
+
+if (!AUTHORIZED) {
+	die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);
+}
+
 final class Popup extends \Stripe\Elements
 {
 	public static function get_container()

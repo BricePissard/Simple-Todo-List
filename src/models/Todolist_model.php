@@ -36,10 +36,8 @@ if (!AUTHORIZED) {
 final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
 {
   const TABLE = 'todolist';
-
   const STATE_ACTIVE 	= 'ACTIVE';
 	const STATE_DELETED	= 'DELETE';
-
   const STATUS_DONE = 'DONE';
 	const STATUS_TODO	= 'TODO';
 
@@ -252,6 +250,4 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
     }
     return $_a;
 	}
-
-
 }

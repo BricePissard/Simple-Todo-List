@@ -29,7 +29,6 @@ if ( !AUTHORIZED ) {
 final class Account_model extends \Stripe\Model implements iCRUDS
 {
   const TABLE = 'account';
-
   const PASSWORD_ENCRYPT = 'encrypt';
   const PASSWORD_DECRYPT = 'decrypt';
 
@@ -44,7 +43,6 @@ final class Account_model extends \Stripe\Model implements iCRUDS
       " WHERE id = '". intval( $_data[ 'id' ] ) . "' " .
      		( ( isset( $_data[ 'email' ] ) && !empty( $_data[ 'email' ] ) && is_string( $_data[ 'email' ] ) && strlen( $_data[ 'email' ] ) > 0 ) ? " AND email='" . \Strings::DBTextClean( $_data[ 'email' ] ) . "' " : '' ) .
      	" LIMIT 100;";
-
       if ( is_callable([ self::$DB, 'prepare' ]) === TRUE ) {
         try {
           $query = self::$DB->prepare( self::$sql );
@@ -75,8 +73,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
           } else {
             \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ], TRUE, NULL );
           }
-        }
-        catch ( \PDOException $err ) {
+        } catch ( \PDOException $err ) {
           \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
         }
       } else {
@@ -130,17 +127,14 @@ final class Account_model extends \Stripe\Model implements iCRUDS
       	( ( !isset( $_data[ 'last_name'  ] ) ) ? '' : "last_name = '" .  \Strings::DBTextClean( $_data[ 'last_name'        ] ) . "'," ) .
       	( ( !isset( $password_crypted   	 ) ) ? '' : "password = '" . 	 \Strings::DBTextClean( $password_crypted			       ) . "'," ) .
       	( ( !isset( $_data[ 'email'      ] ) ) ? '' : "email = '" . 	 	 \Strings::DBTextClean( $_data[ 'email'            ] ) . "'," ) .
-                                                      "id = " .          ( ( isset( $_data[ 'id' ] ) && intval( $_data[ 'id' ] ) > 0 ) ? intval( $_data[ 'id' ] ) : "LAST_INSERT_ID( id )" ) . ";"
+        "id = " .          ( ( isset( $_data[ 'id' ] ) && intval( $_data[ 'id' ] ) > 0 ) ? intval( $_data[ 'id' ] ) : "LAST_INSERT_ID( id )" ) . ";"
         : ';'
       );
-
 		  $DB = \Stripe\Model::$DB;
       $DB = ( ( !$DB ) ? \Stripe\Model::get_db() : $DB );
-
       if ( is_callable([ $DB, 'prepare' ]) ) {
         try {
           $query = $DB->prepare( self::$sql );
-
           if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ); }
     			if ( $query->execute() ) {
             $last_id = intval( ( isset( $_data[ 'id' ] ) && intval( $_data[ 'id' ] ) > 0 ) ?
@@ -148,7 +142,6 @@ final class Account_model extends \Stripe\Model implements iCRUDS
               :
               $DB->lastInsertId()
             );
-
     				if (
               $last_id > 0 &&
     					isset( $_data[ 'password' ] ) &&
@@ -174,8 +167,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
           } else {
             \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ], TRUE, NULL );
           }
-        }
-        catch ( \PDOException $err ) {
+        } catch ( \PDOException $err ) {
           \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
         }
       }
@@ -228,7 +220,6 @@ final class Account_model extends \Stripe\Model implements iCRUDS
     ) {
 			$row_ = self::read([ 'id' => $accountID ]);
 			$row_ = ( ( isset( $row_ ) && !empty( $row_ ) ) ? $row_[ 0 ] : [] );
-
 			if ( isset( $row_[ 'id' ] ) && intval( $row_[ 'id' ] ) > 0 ) {
 				self::set_session( $row_ );
       }
@@ -247,7 +238,6 @@ final class Account_model extends \Stripe\Model implements iCRUDS
       intval( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) > 0
     ) {
 			$r_ = self::read([ "id" => $_SESSION[ 'ACCOUNT' ][ 'id' ] ]);
-
 			if (
         isset(  $r_ ) &&
         !empty( $r_ ) &&
@@ -285,7 +275,6 @@ final class Account_model extends \Stripe\Model implements iCRUDS
     if ( is_callable([ self::$DB, 'prepare' ]) ) {
       try {
         $query = self::$DB->prepare( self::$sql );
-
         if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE )? $DB->errorInfo() : '' ); }
     		if ( $query->execute() ) {
           for ( $i = 0 ; $row = $query->fetch() ; $i++ ) {
@@ -294,8 +283,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
         } else {
           \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ self::$DB, 'errorInfo' ]) === TRUE ) ? self::$DB->errorInfo() : '' ], TRUE, NULL );
         }
-      }
-      catch ( \PDOException $err ) {
+      } catch ( \PDOException $err ) {
         \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
       }
     }
@@ -312,7 +300,6 @@ final class Account_model extends \Stripe\Model implements iCRUDS
       " DELETE FROM ". DB_BASE . "." . self::TABLE .
       " WHERE id = " . intval( $_data[ 'id' ] ) .
       ";";
-
       if ( is_callable([ self::$DB, 'prepare' ]) === TRUE ) {
         try {
           $query = self::$DB->prepare( self::$sql );
@@ -323,8 +310,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
           } else {
             self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' );
           }
-        }
-        catch ( \PDOException $err ) {
+        } catch ( \PDOException $err ) {
           \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
         }
       }
@@ -335,6 +321,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
   /**
 	 * Get the Gravatar image URL from a specified email address.
 	 *
+   * @access public
 	 * @param {string} $email The email address
 	 * @param {string} $s 	Size in pixels, defaults to 80px [ 1 - 2048 ]
 	 * @param {string} $d 	Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
@@ -359,13 +346,13 @@ final class Account_model extends \Stripe\Model implements iCRUDS
   /**
    * Send an emailto the user once his account have been created.
    *
+   * @access private
    * @param {array} Array of data of DB fields of the current user.
    * @retun {boolean} TRUE in case of sucess, FALSE otherwise.
    */
   private static function send_email( Array $account_row_ = [] )
   {
     \Stripe\Email_validate_view::$email = $account_row_[ 'email' ];
-
     return \Stripe\Emails_model::send(
       $account_row_[ 'email' ],
       "Welcome to the Todo App!",
@@ -376,6 +363,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
   /**
    * Control if tbe current ID is valid.
    *
+   * @access private
    * @param {int} account identifier to valid.
    * @return {boolean} TRUE in case of sucess, FALSE otherwise.
    */

@@ -9,6 +9,20 @@ final class Emails_model extends \Stripe\Model
 {
 	public function __construct() {}
 
+	/**
+	 * Send an email
+	 *
+	 * @access public
+	 * @param {string} $to Email address to send the email to.
+	 * @param {string} $subject subject of the email.
+	 * @param {string} $message textual or HTML message to send.
+	 * @param {string} $from [OPTIONAL] Email address of the sender.
+	 * @param {string} $from_name [OPTIONAL] Name of the sender.
+	 * @param {string} $file_name [OPTIONAL] File name.
+	 * @param {string} $file_data [OPTIONAL] File data
+	 * @param {string} $file_type [OPTIONAL] File type, Ex: application/octet-stream
+	 * @return {boolean}
+	 */
 	public static function send( $to, $subject, $message, $from = NULL, $from_name = NULL, $file_name = '', $file_data = NULL, $file_type = 'application/octet-stream' )
 	{
 		if ( class_exists( 'PHPmailer' ) ) {
@@ -18,7 +32,7 @@ final class Emails_model extends \Stripe\Model
 			$mail = new \PHPmailer();
       $mail->IsSendmail();
       $mail->IsHTML( TRUE );
-			$mail->WordWrap = 50; // set word wrap
+			$mail->WordWrap = 50;
 			$mail->CharSet  = "UTF-8";
 			$mail->AddCustomHeader( "X-Mailer: Mailinglist v1.71");
 			$mail->AddCustomHeader( "X-MessageID: TodoList-Mailer-" . $mail->Username );
@@ -27,8 +41,8 @@ final class Emails_model extends \Stripe\Model
 
       $mail->ClearAllRecipients(); // <-- important
       $mail->AddReplyTo( $from );
-      $mail->From =      $from;
-      $mail->FromName =  $from_name;
+      $mail->From = $from;
+      $mail->FromName = $from_name;
 			$mail->AddAddress( $to );
 
 			$mail->ClearAttachments();

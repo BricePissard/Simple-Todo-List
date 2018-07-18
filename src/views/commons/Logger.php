@@ -1,7 +1,13 @@
-<?php namespace Stripe; if(!AUTHORIZED){die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);}
+<?php
+namespace Stripe;
+
+if (!AUTHORIZED) {
+	die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);
+}
+
 final class Logger
 {
-	function __construct(){}
+	public function __construct(){}
 
 	public static function get_signin_block( $page = 'ACCOUNT_SIGNIN', $RESULT_ = NULL, $redirect = '' )
 	{
@@ -12,13 +18,9 @@ final class Logger
 			case 'ACCOUNT_LOGIN'  : $position = '-232px'; break;
 			case 'ACCOUNT_FORGOT' : $position = '-464px'; break;
 		}
-
 		?><div id="content"><?php
-
 			self::error_handler( $RESULT_ );
-
 			?><div class="half-right"><?php
-
 				?><div class="r half-row form-section"><?php
 					?><div class="forms-container" style="top:<?=$position;?>;"><?php
 						self::signin_form( $redirect );
@@ -26,21 +28,15 @@ final class Logger
 						self::forgot_form( $redirect );
 					?></div><?php
 				?></div><?php
-
 			?></div><?php
-
 		?></div><?php
 	}
 
 	public static function error_handler( $RESULT_ = [] )
 	{
-		?><div class="error-alert-container" style="display:<?=( ( (isset( $RESULT_[ 'error' ] ) && !empty( $RESULT_[ 'error' ] ) ) || ( isset( $RESULT_[ 'result' ] ) && !empty( $RESULT_[ 'result' ] ) ) ) ? "block" : 'none' );?>;"><?php
-
-			if (
-		   isset(  $RESULT_[ 'error' ] ) &&
-		   !empty( $RESULT_[ 'error' ] )
-      )
-			{
+		$display = (((isset($RESULT_['error']) && !empty($RESULT_['error'])) || (isset($RESULT_['result']) && !empty($RESULT_['result'])))? "block" : 'none' );
+		?><div class="error-alert-container" style="display:<?=$display;?>;"><?php
+			if (isset($RESULT_['error']) && !empty($RESULT_['error'])) {
 				?><div class="error-alert margin-bottom-lg"><?php
 					?><div class="error-exclaim"><i class="fa hc-attention"></i></div><?php
 					?><div class="alert-content"><?php
@@ -48,22 +44,15 @@ final class Logger
 						?><div class="error-message"><?=( ( isset( $RESULT_[ 'error' ][ 'message' ] ) ) ? $RESULT_[ 'error' ][ 'message' ] : '' );?></div><?php
 					?></div><?php
 				?></div><?php
-			}
-			else if (
-		    isset(  $RESULT_[ 'result' ] ) &&
-		    !empty( $RESULT_[ 'result' ] )
-      )
-			{
+			} else if (isset($RESULT_['result']) && !empty($RESULT_['result'])) {
 				?><div class="ok-alert margin-bottom-lg"><?php
 					?><div class="ok-exclaim"><i class="fa hc-validated"></i></div><?php
 					?><div class="ok-content"><?php
 						?><h4>That's it!</h4><?php
-						?><div class="ok-message"><?=( ( isset( $RESULT_[ 'result' ] ) ) ? $RESULT_[ 'result' ] : '' );?></div><?php
+						?><div class="ok-message"><?=((isset( $RESULT_['result'])) ? $RESULT_[ 'result' ] : '' );?></div><?php
 					?></div><?php
 				?></div><?php
-			}
-			else
-			{
+			} else {
 				?><div class="error-alert margin-bottom-lg"><?php
 					?><div class="error-exclaim"><i class="fa hc-attention"></i></div><?php
 					?><div class="alert-content"><?php
@@ -72,11 +61,10 @@ final class Logger
 					?></div><?php
 				?></div><?php
 			}
-
 		?></div><?php
 	}
 
-	private static function signin_form( $redirect = '' )
+	private static function signin_form($redirect='')
 	{
 		?><div id="signin-container"><?php
 			?><form class="form-signin" autocomplete="on" accept-charset="<?=\Stripe\View::CHARSET;?>" method="<?=\Stripe\Model::POST;?>"><?php
@@ -98,7 +86,7 @@ final class Logger
 		?></div><?php
 	}
 
-	private static function login_form( $redirect = '' )
+	private static function login_form($redirect='')
 	{
 		?><div id="login-container"><?php
 			?><form class="form-login" autocomplete="on" accept-charset="<?=\Stripe\View::CHARSET;?>" method="<?=\Stripe\Model::POST;?>"><?php
@@ -118,7 +106,7 @@ final class Logger
 		?></div><?php
 	}
 
-	private static function forgot_form( $redirect = '' )
+	private static function forgot_form($redirect='')
 	{
 		?><div id="forgot-container"><?php
 			?><form class="form-forgot" autocomplete="on" accept-charset="<?=\Stripe\View::CHARSET;?>" method="<?=\Stripe\Model::POST;?>"><?php
@@ -139,8 +127,7 @@ final class Logger
 
 	public static function get_loggin_popup_control()
 	{
-		if ( isset( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) == FALSE )
-		{
+		if ( isset($_SESSION['ACCOUNT']['id'])==FALSE) {
 			?><section id="signup-popdown" class="internal"><?php
 				\Stripe\Logger::get_signin_block( 'ACCOUNT_SIGNIN', NULL, ( ( isset( $_SERVER[ 'HTTP_REFERER' ] ) ) ? $_SERVER[ 'HTTP_REFERER' ] : NULL ) );
 			?></section><?php
@@ -153,7 +140,7 @@ final class Logger
 	{
 		?><div class="toggle-menu" id="admin-menu-selector"><?php
 			?><a href="" id="admin-menu-toggle" class="bttn"><?php
-				?><img src="<?=\Stripe\Account_model::get_image_url( ( ( isset( $_SESSION[ 'ACCOUNT' ][ 'email' ] ) && !empty( $_SESSION['ACCOUNT']['email'] ) ) ? $_SESSION['ACCOUNT']['email'] : '' ) );?>" class="avatar" alt="Me"/><?php
+				?><img src="<?=\Stripe\Account_model::get_image_url(((isset($_SESSION['ACCOUNT']['email'] ) && !empty( $_SESSION['ACCOUNT']['email'] ) ) ? $_SESSION['ACCOUNT']['email'] : '' ) );?>" class="avatar" alt="Me"/><?php
 			?></a><?php
 	  	?><nav class="menu-options" id="admin-menu-options"><?php
 				?><ul><?php
