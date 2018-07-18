@@ -114,7 +114,6 @@ stripe.todolist =
 
 	save_todo_position : function(new_positions)
 	{
-		console.log( new_positions );
 		stripe.get_api_call(
 			stripe.endpoint.todolist_positions, {
 				key: global_vars.KEY,

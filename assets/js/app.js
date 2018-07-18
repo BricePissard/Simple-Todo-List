@@ -307,7 +307,7 @@ jQuery && jQuery( function( $ ) {
 			}
 		},
 
-		on_logger_form_SUBMIT: function( e )
+		on_logger_form_SUBMIT: function(e)
 		{
 			if (e) {
 				e.preventDefault();

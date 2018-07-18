@@ -18,7 +18,7 @@ abstract class View
   public function __destruct()  {}
 
 	/**
-	 *
+	 * Display on screen the content of a specific page.
 	 */
 	public static function get( $page = NULL )
 	{
@@ -189,10 +189,9 @@ abstract class View
 
 	private static function get_page_loader()
 	{
-		// http://cssload.net/en/
 		return
 		"<div id='pageLoader' style='display:none;'>".
-			Elements::get_loader_SVG() .
+			\Stripe\Elements::get_loader_SVG() .
 		"</div>".
 		"<div id='hidder_overlay' style='display:none;'></div>";
 	}

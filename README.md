@@ -9,7 +9,15 @@ This Todo app allows you to:
 -   Ordering the todos by drag'n dropping the line your convenient order.
 -   Searching for a todo base on its name.
 
+This program is composed of three component:
+-   The core backend software in PHP, a simple MVC set of files with is configuration.
+-   The HTML5/Javascript Web-App frontend with jQuery + 2 external libraries.
+-   The Database in MySQL with 2 tables to store the users and the todolists.
+
 The current application can be tested here: http://stripe.robby.ai/
+
+
+
 
 
 ## 1 - Installation
@@ -122,7 +130,8 @@ ALTER TABLE `todolist`
   COMMIT;
 
 ALTER TABLE `todolist`
-  ADD CONSTRAINT `accountId` FOREIGN KEY (`accountId`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `accountId` FOREIGN KEY (`accountId`) REFERENCES `account` (`id`)
+  ON DELETE CASCADE ON UPDATE CASCADE;
   COMMIT;
 ```
 
@@ -142,10 +151,10 @@ define( 'DB_BASE', 'stripe' );
 define( 'DB_USER', 'stripe_user' );
 define( 'DB_PASS', 'xxxxxxxxx' ); // Replace this password by the one you've set.
 
-define( 'SUB_DOMAIN_NAME', 'stripe' ); 	     // Your server subdomaine.
-define( 'DOMAIN_NAME', 	   'robby.ai' ); 	   // Your server domain name.
-define( 'DEBUG_IP', 	     '89.2.69.205' );  // Your local debug IP addresss.
-define( 'DB_HOST_WWW', 	   '91.121.80.48' ); // Your PROD server IP, (www) 	> https://stripe.robby.ai
+define( 'SUB_DOMAIN_NAME', 'stripe' ); 	     // Your server sub-domaine.
+define( 'DOMAIN_NAME', 	   'robby.ai' );     // Your server domain name.
+define( 'DEBUG_IP',        '89.2.69.205' );  // Your local debug IP addresse.
+define( 'DB_HOST_WWW', 	   '91.121.80.48' ); // Your PROD server IP, (www)  > https://stripe.robby.ai
 define( 'DB_HOST_LOCAL',   '127.0.0.1' );    // Your DEV server IP,  (local) > http://localhost:8080
 //_________ [ END EDIDATE ] ____________________________________________________
 ```
@@ -153,9 +162,88 @@ define( 'DB_HOST_LOCAL',   '127.0.0.1' );    // Your DEV server IP,  (local) > h
 
 ## 2 - Choose of technologies
 
-The TodoList App have been 
+### 2.1 - Problem approach
+
+The postulate form this program is to deliver in one or two days a functional application
+that can be deployed easily in any server and that can be read by any developer without
+any specific framework or environment knowledge.
+
+The only dependencies of for program are on jQuery: jQuery, jQuery-ui, jQuery.bPopup and jQuery.toggles
+The server-side code don't depends on a 3rd party Framework.
+The server-side code have been build as Web-Service oriented, to allows the deployment
+of the proprietary API in another server.  
+
+Both of the code on frontend and backend respect the main programing Design Paterns.
+Several basic technics have been made to prevent hacking (SQL-injection, cross-domain attacks,...).
+
+This program consist on a single page Web-App where all the interaction with the server are made through   
+API calls to local Web-Services.
+This approach allows to separate the backend from the frontend and makes it easier
+future development or language migrations.
 
 
-## 3 - Future implementation
--   Full JS app (ReactJS NodeJS)
--   Memcached / Redis
+
+### 2.2 - Choose of language / Framework
+
+The languages (PHP,JS,MySQL) have been chosen based on their popularity and open-source status,
+to facilitate the development (communities, external developers).
+
+It have been deliberately chosen not to select a PHP backend framework for this program.
+This allows to reduce drastically the size of the software as to increase its readability.
+Removing the use of a third-party Framework requires a deep knowledge of the MVC and other Design Paterns.
+
+It have been deliberately chosen not to create this app in a single JS Web-App using Node.js and ReactJS,
+for better readability, to simplify the deployment, for future development
+(using Java for the backend, place the Web-Services in another server or behind a Load-Balancer,...).
+It also reduce the number of lines of the code and the weight of the program.
+
+It have been deliberately chosen not to use several external tools that can simplify
+the development or optimize the code because it was on the purpose of this program.
+-   CSS: LESS/SASS YUI Compressor.
+-   JS: Google Closure.
+-   PHP: Composer, Eloquent, PHPUnits, PHPDocs, PHP-CS.
+-   SSH: Deployment scripts, Docker.
+-   Apache: Module Memcached.
+-   Git: Travis.
+
+
+
+### 2.3 - Future implementation
+
+#### 2.3.1 - External tools
+The external tools that have been deliberately not selected at first should be used for later development:
+-   CSS: LESS/SASS YUI Compressor.
+-   JS: Google Closure.
+-   PHP: Composer, Eloquent, PHPUnits, PHPDocs, PHP-CS.
+-   SSH: Deployment scripts, Docker.
+-   Apache: Module Memcached.
+-   Git: Travis.
+
+#### 2.3.2 - Full-JS WebApp
+Even is it haven't been selected as an initial Framework, using a Full JS Web-App
+through Node.js and ReactJS have to be considered: it have the benefits of allowing
+to use the same team for the backend, frontend and mobile app development.
+
+#### 2.3.3 - Migration from MySQL > Casandra
+A large development of this Web-App should end in a volume of entries that will require
+a migration of the Database from MySQL to another more robust Database (relational or not, like Casandra),
+the structure of the Models of the current software make this migration very easy.
+
+#### 2.3.4 - Migration from PHP > Java
+A very large development of this Web-App should end in the migration to a Java backend.
+The current development of the Web-App make this migration very easy.
+
+#### 2.3.5 - Migration from Apache to Node.js, Gnix or Cloud Based
+A large development of this Web-App should end in the migration to another type of
+server of in a cloud base environment.
+The current development of the Web-App make this migration very easy.
+
+#### 2.3.6 - API under OAuth2
+A good approach of a modern software is to open its code to a wider community.
+For a future development the API should be ported to OAuth2 and opened to other users.
+This will allows the users to interact with the software from out of the app.
+
+#### 2.3.7 - External GitHub Repositories
+To facilitate the development it can be useful to split some non-core elements
+of the software in external GitHub repositories, to allows the development by
+third-party or by out-source organization. Ex: View components, libraries...
