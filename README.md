@@ -42,17 +42,17 @@ Note that the Rewrite module have to be initialized.
   RewriteEngine On
 
   ## --- Rewite API Page ---------------------------------------------------
-  RewriteCond  %{REQUEST_FILENAME} !-f
-  RewriteCond  %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} ^/api [NC]
-  RewriteRule  ^/api/(.+)/(.+)\.(json|php)(.*)?$ /src/api/$1/$2.php$4 [QSA,L]
+  RewriteRule ^/api/(.+)/(.+)\.(json|php)(.*)?$ /src/api/$1/$2.php$4 [QSA,L]
 
   ## --- Handle all pages in index.php -------------------------------------
   RewriteCond %{REQUEST_URI} !^/(api)/? [NC]
   RewriteCond %{REQUEST_URI} ^/(authorize|access_token) [NC]
-  RewriteCond  %{REQUEST_FILENAME} !-f
-  RewriteCond  %{REQUEST_FILENAME} !-d
-  RewriteRule  ^(.*)$ /index.php?$1 [QSA,L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ /index.php?$1 [QSA,L]
 
   <Directory /home/www/stripe.robby.ai/>
     Options -ExecCGI -FollowSymLinks -Indexes -Includes    
@@ -74,7 +74,7 @@ to create:
 -   A dedicated MySQL user allowed to access only to this application.
 -   Two database tables.
 
-'''Create the MySQL `stripe_user` User, replace the xxxxxxx by a password of your choice''':
+#### 1.2.1 - Create the MySQL `stripe_user` User, replace the xxxxxxx by a password of your choice
 ```MySQL
 CREATE USER 'stripe_user'@'%' IDENTIFIED WITH mysql_native_password;
 GRANT SELECT,INSERT, UPDATE, DELETE, CREATE, DROP, FILE, INDEX, ALTER,
@@ -85,7 +85,7 @@ MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 SET PASSWORD FOR 'stripe_user'@'%' = 'xxxxxxxxx';
 ```
 
-'''Create the MySQL `account` Table''':
+#### 1.2.2 - Create the MySQL `account` Table
 ```MySQL
 CREATE TABLE `account` (
   `id` bigint(15) UNSIGNED NOT NULL COMMENT 'Unique account identifier',
@@ -105,7 +105,7 @@ ALTER TABLE `account`
   MODIFY `id` bigint(15) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Unique account identifier';
 ```
 
-'''Create the MySQL `stripe` Table''':
+#### 1.2.3 - Create the MySQL `stripe` Table
 ```MySQL
 CREATE TABLE `todolist` (
   `id` bigint(15) UNSIGNED NOT NULL COMMENT 'Unique Todo identifier',
@@ -138,6 +138,7 @@ ALTER TABLE `todolist`
 
 ### 1.3 - PHP Configuration file
 
+Place the Software code in your server.
 Using your traditional text editor or software IDE, edit the file:
 ```ssh
 ./src/config/constants.php
@@ -188,7 +189,7 @@ for page-specific objects:
 ./assets/js/web/todolist.js
 ```
 
-### 2.4 - Local API endpoint
+### 2.4 - Local API endpoints
 The interaction between the JS Web-App and the Backend software is made through
 a simple local API REST/HTTP under JSON format.
 The Apache server is configured to handle '''*.json''' as a '''*.php''' extension.
@@ -196,7 +197,8 @@ The API endpoint's files are making a bridge with the MVC software Controllers.
 It have been intentionally chosen NOT to have a single endpoint file for the API
 (with a Controller mapping array) to prevent overload on the server on a same point
 and to get the code more readable and also to be able to set specific settings for
-each API endpoint (Ex: set a s specific header or a cross domain ability...).
+each API endpoint files (Ex: set a s specific header or a cross domain ability, handle file upload...).
+
 All API endpoints files are stored here:  
 ```sh
 ./src/api/**/**.json
@@ -207,10 +209,12 @@ The PHP Backend Core have been create using a simple MVC template with 3 main cl
 -   Model.php
 -   View.php
 -   Controller.php
+
 That are extended by all the sub-classes.
-The Controllers receive their data from the API Web-Services
-The Models can: Create/Read/Update/Delete/Search the data with the database.
-The Views render the HTML/CSS elements.
+
+- The Controllers receive their data from the API Web-Services
+- The Models can: Create/Read/Update/Delete/Search the data with the database.
+- The Views render the HTML/CSS elements.
 
 
 ________________________________________________________________________________
@@ -225,11 +229,13 @@ The postulate of this program is to deliver in one or two days a functional appl
 that can be deployed easily in any server and that can be read by any developer without
 any specific framework or environment knowledge.
 
-### 3.1.2 - JS Dependencies
+### 3.1.2 - Dependencies
 The only dependencies of for program are on jQuery: jQuery, jQuery-ui, jQuery.bPopup and jQuery.toggles
 The server-side code don't depends on a 3rd party Framework.
 The server-side code have been build as Web-Service oriented, to allows the deployment
-of the proprietary API in another server.  
+of the proprietary API in another server.
+Only one image have been used for this Web-App to limit the page load.
+All graphic rendering is processed by either CSS or SVG.  
 
 ### 3.1.3 - Design Paterns and Hacking preventions
 Both of the code on frontend and backend respect the main programing Design Paterns.
