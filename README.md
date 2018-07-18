@@ -17,7 +17,7 @@ This program is composed of three component:
 The current application can be tested here: http://stripe.robby.ai/
 
 
-
+________________________________________________________________________________
 
 
 ## 1 - Installation
@@ -159,65 +159,131 @@ define( 'DB_HOST_LOCAL',   '127.0.0.1' );    // Your DEV server IP,  (local) > h
 //_________ [ END EDIDATE ] ____________________________________________________
 ```
 
+________________________________________________________________________________
 
 
+## 2 - Execution of the program
 
-## 2 - Choose of technologies
+### 2.1 - Single Page Web-App
+The program runs on a single page, the apache server returns all request on this file:
+```sh
+./index.php
+```
 
-### 2.1 - Problem approach
+### 2.2 - Main View
+This page load the configuration files that instantiate all the program dependencies
+(session, database connection, static libraries)
+and then this page load the view of the Class:
+```sh
+./src/views/Todolist_view.php
+```
 
-### 2.1.1 - Postulate
+### 2.3 - The Javascript Web-App
+Each view's Class extends a main View class that is in charge of building the page.
+Once the page is displayed the JS Web-App is instantiated and inherit of the jQuery Object.
+The JS Web-App are stored in two files, one for abstract generic objects and one
+for page-specific objects:
+```sh
+./assets/js/app.js
+./assets/js/web/todolist.js
+```
+
+### 2.4 - Local API endpoint
+The interaction between the JS Web-App and the Backend software is made through
+a simple local API REST/HTTP under JSON format.
+The Apache server is configured to handle '''*.json''' as a '''*.php''' extension.
+The API endpoint's files are making a bridge with the MVC software Controllers.
+It have been intentionally chosen NOT to have a single endpoint file for the API
+(with a Controller mapping array) to prevent overload on the server on a same point
+and to get the code more readable and also to be able to set specific settings for
+each API endpoint (Ex: set a s specific header or a cross domain ability...).
+All API endpoints files are stored here:  
+```sh
+./src/api/**/**.json
+```
+
+### 2.5 - MVC+WS PHP Backend
+The PHP Backend Core have been create using a simple MVC template with 3 main classes
+-   Model.php
+-   View.php
+-   Controller.php
+That are extended by all the sub-classes.
+The Controllers receive their data from the API Web-Services
+The Models can: Create/Read/Update/Delete/Search the data with the database.
+The Views render the HTML/CSS elements.
+
+
+________________________________________________________________________________
+
+
+## 3 - Choose of technologies
+
+### 3.1 - Problem approach
+
+### 3.1.1 - Postulate
 The postulate of this program is to deliver in one or two days a functional application
 that can be deployed easily in any server and that can be read by any developer without
 any specific framework or environment knowledge.
 
-### 2.1.2 - JS Dependencies
+### 3.1.2 - JS Dependencies
 The only dependencies of for program are on jQuery: jQuery, jQuery-ui, jQuery.bPopup and jQuery.toggles
 The server-side code don't depends on a 3rd party Framework.
 The server-side code have been build as Web-Service oriented, to allows the deployment
 of the proprietary API in another server.  
 
-### 2.1.3 - Design Paterns and Hacking preventions
+### 3.1.3 - Design Paterns and Hacking preventions
 Both of the code on frontend and backend respect the main programing Design Paterns.
 Several basic technics have been made to prevent hacking (SQL-injection, cross-domain attacks,...).
 
-### 2.1.4 - Local API as Web-Services
+### 3.1.4 - Local API as Web-Services
 This program consist on a single page Web-App where all the interaction with the server are made through   
 API calls to local Web-Services.
 This approach allows to separate the backend from the frontend and makes it easier
 future development or language migrations.
 
-### 2.1.5 - Create more than necessary from the beginning
+### 3.1.5 - Create more than necessary from the beginning
 Several features have to be created from the beginning otherwise, later, they require a
 more complex development.
 The development of this program have been though from the beginning as it will have
 future development on it, so it have been started with:
 -   Accounts support (sign-in/login/logout).
--   Simple API interaction between JS Web-App and PHP Backend.
+-   Email support (send an email at account creation, send if the password is forgotten).
+-   Simple API interaction between JS Web-App and PHP Backend controller's endpoints.
 -   All the code from backend to frontend is Object-Oriented.
+-   Create the web view as HTML and CSS Responsive.
+-   Create a minimum Web-App JS Core with popup support.
 
 
 
-### 2.2 - Choose of language / Framework
+### 3.2 - Choose of language / Framework / Server
 
-#### 2.2.1 - Languages selected
+#### 3.2.1 - Languages selected
 The languages (PHP,JS,MySQL) have been chosen based on their popularity and their open-source status,
-to facilitate the development (thaks to communities and external developers).
+to facilitate the development (thanks to communities and external developers).
+The two languages (PHP and Javascript) handle PHP Docs and Javascript Docs to comment
+the methods.
+The mains Methods on both frontend and backend have been commented to facilitate the
+understanding of the program.
 
-#### 2.2.2 - No Framework on Backend
+#### 3.2.2 - Server Apache 2
+Apache server have been selected because it was already available in production to
+deploy a beta test version of the app.
+Other servers like Gnix could have been used instead.
+
+#### 3.2.3 - No Framework on Backend
 It have been deliberately chosen NOT to select a PHP backend Framework
 (like Laravel, Symphony or ZEND) for this program.
 This allows to reduce drastically the size of the software as to increase its readability.
 Removing the use of a third-party Framework requires a deep understanding of the MVC and
-other Design Paterns.
+other Design Paterns, class mapping, page mapping, autoloader...
 
-#### 2.2.2 - No Full-JS Web-App
+#### 3.2.4 - No Full-JS Web-App
 It have been deliberately chosen NOT to create this app in a single JS Web-App using Node.js and ReactJS,
 for better readability, to simplify the deployment, for future development
 (using Java for the backend, place the Web-Services in another server or behind a Load-Balancer,...).
 It also reduce the number of lines of the code and the weight of the program.
 
-#### 2.2.3 - No External Tools
+#### 3.2.5 - No External Tools
 It have been deliberately chosen NOT to use several external tools that can simplify
 the development or optimize the code because it was on the purpose of this program.
 -   CSS: LESS/SASS YUI Compressor.
@@ -229,9 +295,9 @@ the development or optimize the code because it was on the purpose of this progr
 
 
 
-### 2.3 - Future implementation
+### 3.3 - Future implementation
 
-#### 2.3.1 - External tools
+#### 3.3.1 - External tools
 The external tools that have been deliberately not selected at first should be used for later development:
 -   CSS: LESS/SASS YUI Compressor.
 -   JS: Google Closure.
@@ -240,33 +306,44 @@ The external tools that have been deliberately not selected at first should be u
 -   Apache: Module Memcached or Redis.
 -   Git: Travis.
 
-#### 2.3.2 - Full-JS WebApp
+#### 3.3.2 - Full-JS WebApp
 Even is it haven't been selected as an initial Framework, using a Full JS Web-App
 through Node.js and ReactJS have to be considered: it have the benefits of allowing
 to use the same team for the backend, frontend and mobile app development.
 
-#### 2.3.3 - Migration from MySQL > Casandra
+#### 3.3.3 - Migration from MySQL > Casandra
 A large development of this Web-App should end in a volume of entries that will require
 a migration of the Database from MySQL to another more robust Database (relational or not, like Casandra),
 the structure of the Models of the current software make this migration very easy.
 
-#### 2.3.4 - Migration from PHP > Java
+#### 3.3.4 - Migration from PHP > Java
 A very large development of this Web-App should end in the migration to a Java backend.
 The current development of the Web-App make this migration very easy.
 Any further development that implies the work of different developers on the same
 software require the use of a well known Framework (either in PHP or Java).
 
-#### 2.3.5 - Migration from Apache to Node.js, Gnix or Cloud Based
+#### 3.3.5 - Migration from Apache to Node.js, Gnix or Cloud Based
 A large development of this Web-App should end in the migration to another type of
-server of in a cloud base environment.
+server or in a cloud base environment.
+Specific servers can also be used for specific purpose (static server for assets content).
 The current development of the Web-App make this migration very easy.
 
-#### 2.3.6 - API under OAuth2
+#### 3.3.6 - API under OAuth2
 A good approach of a modern software is to open its code to a wider community.
 For a future development the API should be ported to OAuth2 and opened to other users.
 This will allows the users to interact with the software from out of the app.
 
-#### 2.3.7 - External GitHub Repositories
+#### 3.3.7 - External GitHub Repositories
 To facilitate the development it can be useful to split some non-core elements
 of the software in external GitHub repositories, to allows the development by
 third-party or by out-source organization. Ex: View components, libraries...
+
+
+________________________________________________________________________________
+
+
+## 4 - Copyright & License
+
+License
+----
+GNU Public License
