@@ -1,10 +1,11 @@
 <?php include_once ( str_replace( 'api/todolist', 'config' , __DIR__ ) . '/APIHandler.php' );
 /**
- *	Received from robby.ai Popup: /popups/todolist/Popup_todo_add.php
- *  through the JS method: stripe.todo_add();
+ * Received from Popup: /popups/todolist/Popup_todo_add.php
+ * through the JS method: stripe.todo_add();
+ * @see https://stripe.robby.ai/api/todolist/add.json?key=1234&name=hello
  *
- *  $_GET['key'];
- *  $_POST['name'];
+ * $_POST[ 'key'  ]; // {string} API OAuth 2 KEY.
+ * $_POST[ 'name' ]; // {string} Todo name to add.
  */
 API_result(
 	\Stripe\Todolist_controller::add([

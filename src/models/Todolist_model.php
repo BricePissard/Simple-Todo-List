@@ -1,34 +1,49 @@
-<?php namespace Stripe; if(!AUTHORIZED){die("Hacking Attempt [CategoriesModel] : ". $_SERVER['REMOTE_ADDR']);}
+<?php
+namespace Stripe;
+
+if (!AUTHORIZED) {
+  die("Hacking Attempt [CategoriesModel] : ". $_SERVER['REMOTE_ADDR']);
+}
+
 /**
+ * Database structure:
  *
- *	CREATE TABLE `todolist` (
- *  	`id` 		        bigint(15) 				      NOT NULL,
- *  	`accountId` 	  bigint(15) 				      NOT NULL COMMENT 'Refers to the database field `account`.`id`',
- *  	`name` 			    varchar(512) 			      COLLATE utf8_unicode_ci DEFAULT NULL,
- *    `position`      bigint(15)              NOT NULL COMMENT 'Refers to the ordering position in tje list',
- *  	`status` 		    enum('DONE','TODO') 	  COLLATE utf8_unicode_ci NOT NULL DEFAULT 'TODO',
- *  	`state` 		    enum('ACTIVE','DELETE') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'ACTIVE',
- * 	 	`date_created` 	timestamp 				      NOT NULL DEFAULT CURRENT_TIMESTAMP,
- * 	 	`date_updated` 	timestamp 				      NOT NULL ON UPDATE CURRENT_TIMESTAMP
+ * CREATE TABLE `todolist` (
+ *   `id`            bigint(15)               UNSIGNED NOT NULL COMMENT 'Unique Todo identifier',
+ *   `accountId`     bigint(15)               UNSIGNED DEFAULT NULL COMMENT 'Refers to the database field `account`.`id`',
+ *   `name`          varchar(512)             COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Name of the Todo',
+ *   `position`      bigint(15)               UNSIGNED DEFAULT NULL COMMENT 'Ordering position of the Todo in ASC (smaller on the top of the list) ',
+ *   `status`        enum('DONE','TODO')      COLLATE utf8_unicode_ci NOT NULL DEFAULT 'TODO',
+ *   `state`         enum('ACTIVE','DELETE')  COLLATE utf8_unicode_ci NOT NULL DEFAULT 'ACTIVE',
+ *   `date_created`  timestamp                NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ *   `date_updated`  timestamp                NOT NULL ON UPDATE CURRENT_TIMESTAMP
  * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
  *
  * ALTER TABLE `todolist`
- *  	ADD PRIMARY KEY (`id`);
+ *   ADD PRIMARY KEY      (`id`),
+ *   ADD KEY `name`       (`name`(255)),
+ *   ADD KEY `status`     (`status`),
+ *   ADD KEY `state`      (`state`),
+ *   ADD KEY `accountId`  (`accountId`);
  *
  * ALTER TABLE `todolist`
- *	  MODIFY `id` bigint(15) NOT NULL AUTO_INCREMENT;COMMIT;
+ *   MODIFY `id` bigint(15) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Unique Todo identifier';
+ *
+ * ALTER TABLE `todolist`
+ *   ADD CONSTRAINT `accountId` FOREIGN KEY (`accountId`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ *   COMMIT;
  */
 final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
 {
-  const TABLE         = 'todolist';
+  const TABLE = 'todolist';
 
   const STATE_ACTIVE 	= 'ACTIVE';
 	const STATE_DELETED	= 'DELETE';
 
-  const STATUS_DONE 	= 'DONE';
-	const STATUS_TODO	  = 'TODO';
+  const STATUS_DONE = 'DONE';
+	const STATUS_TODO	= 'TODO';
 
-  public static $sql 	= NULL;
+  public static $sql = NULL;
 
   public static function create( $_data )
   {
@@ -36,8 +51,7 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
 	   isset(  $_data[ 'accountId' ] ) &&
      !empty( $_data[ 'accountId' ] ) &&
      intval( $_data[ 'accountId' ] ) > 0
-    )
-	  {
+    ) {
       self::$sql =
       " INSERT IGNORE INTO ". DB_BASE . "." . self::TABLE .
       " ( ".
@@ -72,29 +86,20 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
         "id = " . ( ( isset( $_data[ 'id' ] ) && intval( $_data[ 'id' ] ) > 0 ) ? intval( $_data[ 'id' ] ) : "LAST_INSERT_ID( id )" ) . ";"
         : ';'
       );
-
 		  $DB = \Stripe\Model::$DB;
       $DB = ( ( !$DB ) ? \Stripe\Model::get_db() : $DB );
-
-      if ( is_callable([ $DB, 'prepare' ]) )
-      {
-        try
-        {
+      if ( is_callable([ $DB, 'prepare' ]) ) {
+        try {
           $query = $DB->prepare( self::$sql );
-
           if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ); }
-    			if ( $query->execute() )
-    			{
+    			if ( $query->execute() ) {
             return intval( ( isset( $_data[ 'id' ] ) && intval( $_data[ 'id' ] ) > 0 ) ?
               $_data[ 'id' ]
               :
               $DB->lastInsertId()
             );
-          }
-          else { \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ], TRUE, NULL ); }
-        }
-        catch ( \PDOException $err )
-        {
+          } else { \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ], TRUE, NULL ); }
+        } catch ( \PDOException $err ) {
           \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
         }
       }
@@ -105,36 +110,83 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
   public static function read( $_data )
   {
     $_a = [];
-
-    if ( isset( $_data[ 'accountId' ] ) && intval( $_data[ 'accountId' ] ) > 0 )
-    {
+    if ( isset( $_data[ 'accountId' ] ) && intval( $_data[ 'accountId' ] ) > 0 ) {
       self::$sql = "".
   	  " SELECT * ".
    	  " FROM " . DB_BASE . "." . self::TABLE .
    	  " WHERE accountId = '". intval( $_data[ 'accountId' ] ) . "' ".
-      " AND state = '" .      \Strings::DBTextClean( $_data[ 'state'    ]	) . "' " .
+      " AND state = '" . \Strings::DBTextClean( $_data[ 'state' ] ) . "' " .
       " ORDER BY position, id ASC;";
-
-  	  if ( is_callable([ self::$DB, 'prepare' ]) )
-  	  {
-  	    try
-  	    {
+  	  if ( is_callable([ self::$DB, 'prepare' ]) ) {
+  	    try {
             $query = self::$DB->prepare( self::$sql );
             if ( !$query) { self::error( __CLASS__, __METHOD__, self::$sql ); }
             $query->execute();
-
-            for ( $i = 0 ; $row = $query->fetch() ; $i++ )
-            {
+            for ( $i = 0 ; $row = $query->fetch() ; $i++ ) {
               $_a = self::_list( $_a, $row, $i );
             }
-          }
-          catch ( \PDOException $err )
-          {
-            Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql );
+          } catch ( \PDOException $err ) {
+            \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql );
           }
   	  }
     }
     return $_a;
+  }
+
+  public static function count( $_data )
+  {
+    $_a = 0;
+    if ( isset( $_data[ 'accountId' ] ) && intval( $_data[ 'accountId' ] ) > 0 ) {
+      self::$sql = "".
+  	  " SELECT COUNT(*) as count".
+   	  " FROM " . DB_BASE . "." . self::TABLE .
+   	  " WHERE accountId = '". intval( $_data[ 'accountId' ] ) . "' ".
+      " AND state = '" . \Strings::DBTextClean( $_data[ 'state' ] ) . "' " .
+      ";";
+  	  if ( is_callable([ self::$DB, 'prepare' ]) ) {
+  	    try {
+          $query = self::$DB->prepare( self::$sql );
+          if ( !$query) { self::error( __CLASS__, __METHOD__, self::$sql ); }
+          $query->execute();
+          $result_ = $query->fetch();
+          $_a = ( ( isset( $result_[ 'count' ] ) && !empty( $result_[ 'count' ] ) ) ? intval( $result_[ 'count' ] ) : 0 );
+        } catch ( \PDOException $err ) {
+          \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql );
+        }
+  	  }
+    }
+    return $_a;
+  }
+
+  public static function update_positions( $_data )
+  {
+    $values_ = [];
+    foreach( $_data[ 'positions' ] as $pos_ ) {
+      array_push( $values_, "(".$pos_['id'].",".$pos_['position'].")" );
+    }
+    self::$sql =
+    " INSERT IGNORE INTO ". DB_BASE . "." . self::TABLE .
+      " (id,position) " .
+    " VALUES " .
+      implode( ',', $values_ ) .
+    " ON DUPLICATE KEY UPDATE ".
+      " position=VALUES(position)" .
+    ";";
+    $DB = \Stripe\Model::$DB;
+    $DB = ( ( !$DB ) ? \Stripe\Model::get_db() : $DB );
+    if ( is_callable([ $DB, 'prepare' ]) ) {
+      try {
+        $query = $DB->prepare( self::$sql );
+        if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ); }
+        if ( $query->execute() ) {
+          $result = $query->fetch();
+          return TRUE;
+        } else { \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ], TRUE, NULL ); }
+      } catch ( \PDOException $err ) {
+        \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
+      }
+    }
+    return TRUE;
   }
 
   public static function delete( $_data )
@@ -179,60 +231,24 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
     return FALSE;
   }
 
-	public static function search( $name = '', $isSoundLike = FALSE )
+	public static function search( $name = '' ) {}
+
+
+  // -- Private methods
+
+	private static function _list($_a, $row, $i=0)
 	{
-    self::$sql =
-    " SELECT *, count(*) as `matches` ".
-		" FROM " . DB_BASE . "." . self::TABLE .
-		" WHERE language='". self::$lang."' ".
-		" AND ( " . $search . " ) " .
-		" GROUP BY `id` " .
-		" ORDER BY matches, length( code ) DESC;";
-
-		if ( is_callable( array( self::$DB, 'prepare' ) ) )
-		{
-			try
-			{
-	      $query = self::$DB->prepare( self::$sql );
-	      if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql ); }
-				$query->execute();
-
-        for ( $i = 0 ; $row = $query->fetch() ; $i++ )
-        {
-          $_a = self::_list( $_a, $row, $i );
-        }
-			}
-      catch ( \PDOException $err )
-      {
-        Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql );
-      }
-		}
-	  return $_a;
-	}
-
-
-  // -- PRIVATES METHODS
-
-	private static function _list( $_a, $row, $i = 0 )
-	{
-    if (
-			isset(  $row ) &&
-			!empty( $row )
-		)
-    {
-      array_push(
-        $_a,
-        array(
-          'id'            => ( ( isset( $row[ 'id'           ] ) ) ? $row[ 'id'           ] : NULL ),
-          'accountId'     => ( ( isset( $row[ 'accountId'    ] ) ) ? $row[ 'accountId'    ] : NULL ),
-          'name'          => ( ( isset( $row[ 'name'         ] ) ) ? $row[ 'name'         ] : NULL ),
-          'position'      => ( ( isset( $row[ 'position'     ] ) ) ? $row[ 'position'     ] : NULL ),
-          'status'        => ( ( isset( $row[ 'status'       ] ) ) ? $row[ 'status'       ] : NULL ),
-          'state'         => ( ( isset( $row[ 'state' 		   ] ) ) ? $row[ 'state'        ] : NULL ),
-          'date_created'  => ( ( isset( $row[ 'date_created' ] ) ) ? $row[ 'date_created' ] : NULL ),
-          'date_updated'  => ( ( isset( $row[ 'date_updated' ] ) ) ? $row[ 'date_updated' ] : NULL )
-        )
-      );
+    if ( isset($row) && !empty($row) ) {
+      array_push( $_a, [
+        'id'            => ( ( isset( $row[ 'id'           ] ) ) ? $row[ 'id'           ] : NULL ),
+        'accountId'     => ( ( isset( $row[ 'accountId'    ] ) ) ? $row[ 'accountId'    ] : NULL ),
+        'name'          => ( ( isset( $row[ 'name'         ] ) ) ? $row[ 'name'         ] : NULL ),
+        'position'      => ( ( isset( $row[ 'position'     ] ) ) ? $row[ 'position'     ] : NULL ),
+        'status'        => ( ( isset( $row[ 'status'       ] ) ) ? $row[ 'status'       ] : NULL ),
+        'state'         => ( ( isset( $row[ 'state' 		   ] ) ) ? $row[ 'state'        ] : NULL ),
+        'date_created'  => ( ( isset( $row[ 'date_created' ] ) ) ? $row[ 'date_created' ] : NULL ),
+        'date_updated'  => ( ( isset( $row[ 'date_updated' ] ) ) ? $row[ 'date_updated' ] : NULL )
+      ]);
     }
     return $_a;
 	}

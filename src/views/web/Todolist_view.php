@@ -1,4 +1,10 @@
-<?php namespace Stripe; if(!AUTHORIZED){die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);}
+<?php
+namespace Stripe;
+
+if (!AUTHORIZED) { 
+	die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);
+}
+
 /**
  * @link https://stripe.robby.ai
  */
@@ -10,19 +16,14 @@ final class Todolist_view extends \Stripe\View implements iView
 
 	public static function output()
 	{
-		define( 'CURRENT_PAGE', self::PAGE );
-
 		self::$LIST_ = \Stripe\Todolist_controller::get_list();
 
 		self::page( self::PAGE, 'TodoList App', 'This is a TodoList app.', ['todo','list','todolist','todo list'] );
-
 		echo self::body( 'in', self::PAGE );
 	  self::header( self::PAGE );
-
 		?><div class="page" itemtype="http://schema.org/WebPage"><?php
 			self::get_container();
 		?></div><?php
-
 		self::footer( FALSE );
 		echo self::body( 'out',self::PAGE );
 	}
@@ -40,8 +41,7 @@ final class Todolist_view extends \Stripe\View implements iView
 
 	private static function get_button_add()
 	{
-		if ( isset( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) )
-		{
+		if ( isset( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) ) {
 			?><button id="add-todo-button"><?php
 				?><i>+</i><?php
 			?></button><?php
@@ -51,30 +51,20 @@ final class Todolist_view extends \Stripe\View implements iView
 	private static function get_list()
 	{
 		?><div id="list-container"><?php
-
-			if ( isset( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) )
-			{
+			if ( isset( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) ) {
 				self::get_list_header();
-
 				?><ul id="sortable"><?php
-					if ( isset( self::$LIST_ ) && !empty( self::$LIST_ ) )
-					{
-						foreach ( self::$LIST_ as $row )
-						{
+					if ( isset( self::$LIST_ ) && !empty( self::$LIST_ ) ) {
+						foreach ( self::$LIST_ as $row ) {
 							self::get_row( $row );
 						}
-					}
-					else
-					{
+					} else {
 						self::get_empty_list();
 					}
 				?></ul><?php
-			}
-			else
-			{
+			} else {
 				self::get_unlogged();
 			}
-
 		?></div><?php
 	}
 
@@ -94,14 +84,14 @@ final class Todolist_view extends \Stripe\View implements iView
 		$checked = ( ( $row_[ 'status' ] == \Stripe\Todolist_model::STATUS_DONE ) ? TRUE : FALSE );
 
 		?><li id="row-<?=$row_[ 'id' ];?>" <?=( ( $checked == TRUE ) ? 'class="done"' : '' );?>><?php
-			?><a class="nolink delete" data-id="<?=$row_[ 'id' ];?>">x</a><?php
-			?><a class="nolink editable" data-id="<?=$row_[ 'id' ];?>"><?=$row_[ 'name' ]?></a><?php
+			?><a class="nolink delete" href="#" data-id="<?=$row_[ 'id' ];?>">x</a><?php
+			?><a class="nolink editable" href="#" data-id="<?=$row_[ 'id' ];?>"><?=$row_[ 'name' ]?></a><?php
 			echo \Stripe\Elements::get_button_checkbox([
 				'checked' => $checked,
-				'key'			=> $row_[ 'id' ],
-				'on'			=> \Stripe\Todolist_model::STATUS_DONE,
-				'off'			=> \Stripe\Todolist_model::STATUS_TODO,
-				'id'			=> 'todo-checkbox'
+				'key' => $row_[ 'id' ],
+				'on' => \Stripe\Todolist_model::STATUS_DONE,
+				'off' => \Stripe\Todolist_model::STATUS_TODO,
+				'id' => 'todo-checkbox'
 			]);
 		?></li><?php
 	}

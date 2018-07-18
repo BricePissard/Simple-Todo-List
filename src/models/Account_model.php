@@ -6,17 +6,25 @@ if ( !AUTHORIZED ) {
 }
 
 /**
+ * Database structure:
  *
- * CREATE TABLE  `stripe`.`accounts` (
- *  `id`             	 BIGINT( 15 )       UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
- *	`first_name`    	 VARCHAR( 128 )     CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
- *  `last_name`      	 VARCHAR( 128 )     CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
- * 	`password` 			   VARCHAR( 128 )   	CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
- *	`email`          	 VARCHAR( 128 )     CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
- *	`date_created`     TIMESTAMP      	  NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT 'Format ATOM: YYYY-MM-DD HH:ii:ss',
- *	PRIMARY KEY 			  (`id`),
- *  UNIQUE KEY `email` 	(`email`),
- * ) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ * CREATE TABLE `account` (
+ *  `id`            bigint(15) UNSIGNED NOT NULL COMMENT 'Unique account identifier',
+ *  `email`         varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+ *  `password`      varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+ *  `first_name`    varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+ *  `last_name`     varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+ *  `date_created`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ *
+ * ALTER TABLE `account`
+ *   ADD PRIMARY KEY (`id`),
+ *   ADD UNIQUE KEY `email` (`email`),
+ *   ADD KEY `first_name` (`first_name`,`last_name`);
+ *
+ * ALTER TABLE `account`
+ *   MODIFY `id` bigint(15) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Unique account identifier', AUTO_INCREMENT=1;
+ *   COMMIT;
  */
 final class Account_model extends \Stripe\Model implements iCRUDS
 {
@@ -158,8 +166,8 @@ final class Account_model extends \Stripe\Model implements iCRUDS
                 isset(  $account_row_[ 'id' ] ) &&
                 intval( $account_row_[ 'id' ] ) > 0
               ) {
-                // -- initialize here: $_SESSION[ 'ACCOUNT' ][ 'id' ]
-    						self::set_session( $account_row_ );
+                self::set_session( $account_row_ );
+                self::send_email( $account_row_ );
     					}
     				}
          		return $last_id;
@@ -348,6 +356,29 @@ final class Account_model extends \Stripe\Model implements iCRUDS
 
   // -- Private Methods
 
+  /**
+   * Send an emailto the user once his account have been created.
+   *
+   * @param {array} Array of data of DB fields of the current user.
+   * @retun {boolean} TRUE in case of sucess, FALSE otherwise.
+   */
+  private static function send_email( Array $account_row_ = [] )
+  {
+    \Stripe\Email_validate_view::$email = $account_row_[ 'email' ];
+
+    return \Stripe\Emails_model::send(
+      $account_row_[ 'email' ],
+      "Welcome to the Todo App!",
+      \Stripe\Email_validate_view::output()
+    );
+  }
+
+  /**
+   * Control if tbe current ID is valid.
+   *
+   * @param {int} account identifier to valid.
+   * @return {boolean} TRUE in case of sucess, FALSE otherwise.
+   */
   private static function _control( $id = NULL )
   {
     return ( ( isset( $id ) && !empty( $id ) && intval( $id ) > 0 ) ? TRUE : FALSE );

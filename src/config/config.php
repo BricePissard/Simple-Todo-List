@@ -1,4 +1,4 @@
-<?php if ( defined( 'AUTHORIZED' ) == FALSE ) define( 'AUTHORIZED', TRUE );
+<?php if ( defined( 'AUTHORIZED' ) == FALSE ) { define( 'AUTHORIZED', TRUE ); }
 
 setlocale( LC_ALL, 'en_US.UTF8' );
 
@@ -32,7 +32,6 @@ ini_set( 'session.gc_maxlifetime',  ONE_MONTH_SECONDS  ); // one month: 3600*24*
 // -- Error handlers
 error_reporting( E_ALL );
 register_shutdown_function([ '\Stripe\Controller', 'set_fatal_handler' ] );
-
 
 // -- Debuging
 if ( DEBUG )

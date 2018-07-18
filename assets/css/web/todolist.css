@@ -23,13 +23,13 @@
 		#list-container header div {position:relative;display:inline-block;width:69%;}
 			#list-container header div input {background:#f6f6f6;border:none;border-radius:30px;padding:0 43px;color:#555;}
 			#list-container header div i {position:absolute;left:15px;top:14px;font-size:15px;opacity:.3;}
-	#sortable { list-style-type:none;margin:0;padding:0;width:100%;position:relative;}
+	#sortable { list-style-type:none;margin:0;padding:0;width:100%;position:relative;max-height:70vh;overflow:scroll;overflow-x:hidden;}
 	  #sortable li {position:relative;margin:0 15px 12px 15px;padding:10px;padding-left:1.5em;font-size:1.4em;box-shadow:0 2px 10px rgba(0,0,0,0.04),0 2px 5px rgba(0,0,0,0.04);height:40px;border-radius:30px;background:#fefefe;cursor:move;transition: all 0.3s cubic-bezier(.25,.8,.25,1);}
 		#sortable li:hover {box-shadow:0 14px 28px rgba(0,0,0,0.05), 0 10px 10px rgba(0,0,0,0.06);}
 			#sortable li.done a.editable {opacity:0.2;text-decoration:line-through;}
 			#sortable li.done a.delete {opacity:0.4;}
 			#sortable li a.delete {background:rgb(255,90,95);display:inline-block;font-size:21px;font-weight:bold;border-radius:100%;width:29px;height:29px;position:absolute;left:5px;top:8px;text-align:center;color:#fff;cursor:pointer;z-index:10;}
-			#sortable li a.editable {font-size:17px;font-weight:600;padding:4px;display:inline-block;position:absolute;width:78%;left:50px;top:5px;word-wrap:break-word;max-height:31px;overflow:hidden;line-height:14px;}
+			#sortable li a.editable {font-size:17px;font-weight:600;padding:4px;display:inline-block;position:absolute;width:78%;left:50px;top:5px;word-wrap:break-word;max-height:31px;overflow:hidden;line-height:14px;color:#444;}
 				#sortable li a input {font-size:17px;font-weight:600;position:absolute;top:2px;left:-5px;width:78%;height:20px;border:none;padding:15px;opacity:1;color:rgb(51,191,126);}
 
 
@@ -38,6 +38,7 @@
 	#list-container header {padding-bottom:0;}
 		#list-container header h2 {font-size:15px;margin:7px 0 16px 0;}
 	#add-todo-button {width:85px;height:85px;bottom:18px;}
-	#sortable li a.editable {left:33px;padding:2px 0 2px 10px;font-size:14px;width:57%;}
-	#sortable li a input {width:100%;}
+	#sortable {max-height:65vh;}
+		#sortable li a.editable {left:33px;padding:2px 0 2px 10px;font-size:14px;width:57%;}
+			#sortable li a input {width:100%;}
 }

@@ -1,4 +1,10 @@
-<?php namespace Stripe; if(!AUTHORIZED){die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);}
+<?php
+namespace Stripe;
+
+if (!AUTHORIZED) {
+	die("Hacking Attempt: ". $_SERVER['REMOTE_ADDR']);
+}
+
 /**
  * @link http://stripe.robby.ai/
  * @link http://localhost:8080/
@@ -11,6 +17,9 @@ abstract class View
 	public function __construct() {}
   public function __destruct()  {}
 
+	/**
+	 *
+	 */
 	public static function get( $page = NULL )
 	{
 		$page = ucfirst( strtolower( $page ) );
@@ -77,6 +86,9 @@ abstract class View
 		?></head><?php
 	}
 
+	/**
+	 *
+	 */
 	protected static function body( $type='in', $page_type = 'TODOLIST' )
 	{
 		switch ( $type )

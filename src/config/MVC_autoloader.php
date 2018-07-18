@@ -1,5 +1,7 @@
 <?php if ( !AUTHORIZED ){ die( "Hacking Attempt: ". $_SERVER[ 'REMOTE_ADDR' ] ); }
 
+// -- Load local libraries
+require_once( INCLUDES_LIBS . 'PHPMailer.php' );
 require_once( INCLUDES_LIBS . 'Strings.php'	);
 require_once( INCLUDES_LIBS . 'Crypter.php'	);
 
@@ -9,15 +11,13 @@ final class MVC_autoloader
 
   private function get_classmap()
   {
-    if ( !isset( $this->classmap ) )
-    {
+    if ( !isset( $this->classmap ) ) {
       $classmap = ( include INCLUDES_CONFIG .'MVC_classmap.php' );
 
       if (
         isset(  $classmap ) &&
         !empty( $classmap )
-      )
-      {
+      ) {
         $this->classmap = $classmap;
       }
     }
@@ -45,8 +45,7 @@ final class MVC_autoloader
     if (
       isset(  $classes_ ) &&
       !empty( $classes_ )
-    )
-    {
+    ) {
       foreach ( $classes_ as $classPath )
       {
         require_once( $classPath );

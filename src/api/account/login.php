@@ -1,10 +1,11 @@
-<?php include_once ( str_replace( 'api/account', 'config' , __DIR__ ) .  '/APIHandler.php' );
+<?php include_once ( str_replace( 'api/account', 'config' , __DIR__ ) . '/APIHandler.php' );
 /**
- *	Received from robby.ai.com Logger page: /account/login
+ * Received from Logger page: /account/login
+ * @link http://stripe.robby.ai/api/account/login.json?key=1234&email=test@test.com&password=xxxxx
  *
- *  $_GET['key']; // = IP
- *  $_POST['email'];
- *  $_POST['password'];
+ * $_POST[ 'key'      ]; // {string} API OAuth 2 KEY
+ * $_POST[ 'email'    ]; // {string} email address.
+ * $_POST[ 'password' ]; // {string} password.
  */
 API_result(
 	\Stripe\Account_controller::get_login(
@@ -12,5 +13,5 @@ API_result(
 		( ( isset( $email    ) ) ? $email    : NULL ),
 		( ( isset( $password ) ) ? $password : NULL )
 	),
-    ( ( isset( $output ) && $output == \Stripe\Model::API_OUTPUT_XML ) ? \Stripe\Model::API_OUTPUT_XML : \Stripe\Model::API_OUTPUT_JSON )
+  ( ( isset( $output ) && $output == \Stripe\Model::API_OUTPUT_XML ) ? \Stripe\Model::API_OUTPUT_XML : \Stripe\Model::API_OUTPUT_JSON )
 );

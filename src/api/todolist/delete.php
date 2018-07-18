@@ -1,10 +1,11 @@
 <?php include_once ( str_replace( 'api/todolist', 'config' , __DIR__ ) . '/APIHandler.php' );
 /**
- *	Received from robby.ai Popup: /popups/commons/Popup_confirm.php
- *  through the JS method: stripe.todo_delete();
+ * Received from Popup: /popups/commons/Popup_confirm.php
+ * Through the JS method: stripe.todo_delete();
+ * @link https://stripe.robby.ai/api/todolist/delete.json?key=1234&id=1234
  *
- *  $_GET['key'];
- *  $_POST['id'];
+ *  $_POST[ 'key' ]; // {string} OAuth 2 API KEY.
+ *  $_POST[ 'id'  ]; // {int} todolist id, refers to DB table field: `todolist`.`id`
  */
 API_result(
 	\Stripe\Todolist_controller::delete([
