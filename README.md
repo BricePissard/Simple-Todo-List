@@ -74,7 +74,7 @@ to create:
 -   A dedicated MySQL user allowed to access only to this application.
 -   Two database tables.
 
-#### 1.2.1 - Create the MySQL `stripe_user` User, replace the xxxxxxx by a password of your choice
+#### 1.2.1 - Create the MySQL `stripe_user` User, replace the `xxxxxxx` by a password of your choice
 ```MySQL
 CREATE USER 'stripe_user'@'%' IDENTIFIED WITH mysql_native_password;
 GRANT SELECT,INSERT, UPDATE, DELETE, CREATE, DROP, FILE, INDEX, ALTER,
@@ -136,7 +136,7 @@ ALTER TABLE `todolist`
 ```
 
 
-### 1.3 - PHP Configuration file
+### 1.3 - PHP Configuration File
 
 Place the Software code in your server.
 Using your traditional text editor or software IDE, edit the file:
@@ -189,7 +189,7 @@ for page-specific objects:
 ./assets/js/web/todolist.js
 ```
 
-### 2.4 - Local API endpoints
+### 2.4 - Local API Endpoints
 The interaction between the JS Web-App and the Backend software is made through
 a simple local API REST/HTTP under JSON format.
 The Apache server is configured to handle '''*.json''' as a '''*.php''' extension.
@@ -237,7 +237,7 @@ of the proprietary API in another server.
 Only one image have been used for this Web-App to limit the page load.
 All graphic rendering is processed by either CSS or SVG.  
 
-### 3.1.3 - Design Paterns and Hacking preventions
+### 3.1.3 - Design Paterns and Hacking Preventions
 Both of the code on frontend and backend respect the main programing Design Paterns.
 Several basic technics have been made to prevent hacking (SQL-injection, cross-domain attacks,...).
 
@@ -247,7 +247,7 @@ API calls to local Web-Services.
 This approach allows to separate the backend from the frontend and makes it easier
 future development or language migrations.
 
-### 3.1.5 - Create more than necessary from the beginning
+### 3.1.5 - Create Features from the Beginning
 Several features have to be created from the beginning otherwise, later, they require a
 more complex development.
 The development of this program have been though from the beginning as it will have
@@ -301,7 +301,7 @@ the development or optimize the code because it was on the purpose of this progr
 
 
 
-### 3.3 - Future implementation
+### 3.3 - Future Implementation
 
 #### 3.3.1 - External tools
 The external tools that have been deliberately not selected at first should be used for later development:
