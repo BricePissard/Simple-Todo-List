@@ -102,9 +102,9 @@ final class Account_controller extends \Stripe\Controller
 	public static function get_login( $redirect = NULL, $email = NULL, $password = NULL )
 	{
 		$RESULT_ = [];
-    $RESULT_[ 'data' ] = [
-      "email"    => $email,
-      "password" => $password
+    $RESULT_['data'] = [
+      "email"=>$email,
+      "password"=>$password
     ];
 
 		if ( isset( $email ) && !empty( $email ) && is_string( $email ) && \Strings::isValidEmail( $email ) === TRUE ) {

@@ -1,8 +1,8 @@
 <?php
 namespace Stripe;
 
-if ( !AUTHORIZED ) {
-  die( "Hacking Attempt: ". $_SERVER[ 'REMOTE_ADDR' ] );
+if (!AUTHORIZED) {
+  die("Hacking Attempt: ".$_SERVER['REMOTE_ADDR']);
 }
 
 /**

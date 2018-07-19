@@ -59,16 +59,16 @@ class Elements extends \Stripe\View
 		$button_checkbox =
 		"<div class=\"toggle ".( ( $DATA_['checked'] == TRUE ) ? 'toggle-on' : 'toggle-off' ). "\" " .
 			"id=\"". $DATA_['id']."-div\" ".
-			"data-checked=\"".	$DATA_[ 'checked' ] . "\" ".
-			"data-checkbox=\"". $DATA_[ 'id' 			] . "-checkbox\" ".
-			( ( isset( $DATA_[ 'key' ] ) && strlen( $DATA_[ 'key' ] ) > 0 ) ? "data-key=\"".		 $DATA_[ 'key' ] ."\" " : '' ).
-			( ( isset( $DATA_[ 'on'  ] ) && strlen( $DATA_[ 'on'  ] ) > 0 ) ? "data-ontext=\"".	 $DATA_[ 'on'  ] ."\" " : '' ).
-			( ( isset( $DATA_[ 'off' ] ) && strlen( $DATA_[ 'off' ] ) > 0 ) ? "data-offtext=\"". $DATA_[ 'off' ] ."\">" : '' ).
-			( ( $DATA_[ 'checked' ] == TRUE ) ? $DATA_[ 'on' ] : $DATA_[ 'off' ] ) .
+			"data-checked=\"".	$DATA_['checked'] . "\" ".
+			"data-checkbox=\"". $DATA_['id' 			] . "-checkbox\" ".
+			((isset($DATA_['key'] ) && strlen( $DATA_['key'] ) > 0 ) ? "data-key=\"".		 $DATA_['key'] ."\" " : '' ).
+			((isset($DATA_['on'  ] ) && strlen( $DATA_['on'  ] ) > 0 ) ? "data-ontext=\"".	 $DATA_['on'  ] ."\" " : '' ).
+			((isset($DATA_['off'] ) && strlen( $DATA_['off'] ) > 0 ) ? "data-offtext=\"". $DATA_['off'] ."\">" : '' ).
+			( ( $DATA_['checked'] == TRUE ) ? $DATA_['on'] : $DATA_['off'] ) .
 		"</div>".
 		"<input ";
 
-		if ( isset( $DATA_[ 'onchecked' ] ) && isset( $DATA_[ 'onunchecked' ] ) ) {
+		if ( isset( $DATA_['onchecked'] ) && isset( $DATA_['onunchecked'] ) ) {
 			$button_checkbox .= " onchange=\"if(jQuery(this).is(':checked')){".$DATA_['onchecked']." jQuery('#".$DATA_['id']."-div .toggle-blob').css({border:'3px solid rgba(135,144,193,1)'}); jQuery('#".$DATA_['id']."-div .toggle-on').css({background:'rgba(135,144,193,1)'}); }else{ ".$DATA_['onunchecked']." jQuery('#".$DATA_['id']."-div .toggle-blob').css({border:'3px solid rgba(135,144,193,.2)'}); jQuery('#".$DATA_['id']."-div .toggle-on').css({background:'rgba(135,144,193,.2)'});};\" ";
 		}
 

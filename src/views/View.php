@@ -45,8 +45,8 @@ abstract class View
 		?><head><?php
 			?><meta charset="<?=self::CHARSET;?>"><?php
 			?><title><?=$title;?></title><?php
-			?><meta name="description" content="<?=( ( isset( $description ) ) ? addslashes( $description ) : '' );?>"/><?php
-			?><meta name="keywords" content="<?=( ( isset( $keywords_ ) && !empty( $keywords_ ) ) ? implode( ',', $keywords_ ) : '' );?>"/><?php
+			?><meta name="description" content="<?=((isset($description))?addslashes( $description ) : '' );?>"/><?php
+			?><meta name="keywords" content="<?=((isset($keywords_ ) && !empty( $keywords_))?implode( ',', $keywords_ ) : '' );?>"/><?php
 			?><meta name="language" content="<?=DEFAULT_LANG;?>"/><?php
 			?><meta name="country" content="US"/><?php
 			?><meta name="date" content="<?=date( \DateTime::ATOM );?>"/><?php
@@ -71,7 +71,7 @@ abstract class View
 			?><meta name="copyright"<?php				?> content="copyright <?=ROOT_DOMAIN;?> ©<?=date( "Y" );?>"/><?php
 			?><meta name="googlebot"<?php				?> content="index,follow,all"/><?php
 			?><meta name="robots"<?php					?> content="index,follow,all"/><?php
-			?><meta name="identifier-url"<?php	?> content="<?=PROTOCOL_SECURE.ROOT_DOMAIN;?>"/><?php
+			?><meta name="identifier-url"<?php	?> content="<?=PROTOCOL.SUB_DOMAIN_NAME.'.'.ROOT_DOMAIN;?>"/><?php
 
 			?><link title="Home" href="<?= CURRENT_SITE_FOLDER;	?>" rel="start"/><?php
 			?><link rel="icon" type="image/png" href="<?=\Stripe\Model::get_asset_path( "favicon.png", 'IMG' );?>" /><?php
@@ -124,7 +124,7 @@ abstract class View
 		?><header class="strip_bg"><?php
 			?><div class="contnr"><?php
       	?><h1>Todo List</h1><?php
-				if ( isset( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) == TRUE )
+				if ( isset( $_SESSION['ACCOUNT']['id'] ) == TRUE )
 				{
 				  \Stripe\Logger::get_account_icon_menu();
         }
@@ -160,8 +160,8 @@ abstract class View
 			"CORS:'".			"false"	."'," .
 			"LANG:'".			DEFAULT_LANG ."'," .
 			"API:'".			API	. "'," .
-			"KEY:'" .			( ( isset( $_SERVER[ 'REMOTE_ADDR' ] ) ) ? $_SERVER[ 'REMOTE_ADDR' ] : 'abcd' ). "'," .
-			"IS_LOGGED:".	( ( isset( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) && intval( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) > 0 ) ? 'true,' : 'false,' ) .
+			"KEY:'" .			((isset($_SERVER['REMOTE_ADDR']))?$_SERVER['REMOTE_ADDR'] : 'abcd' ). "'," .
+			"IS_LOGGED:".	((isset($_SESSION['ACCOUNT']['id'] ) && intval( $_SESSION['ACCOUNT']['id'] ) > 0 ) ? 'true,' : 'false,' ) .
 		"};";
 	}
 

@@ -53,24 +53,24 @@ abstract class Model
 	public static function get_db()
 	{
 	  try {
-			$DB = new \PDO( PDO_DSN, DB_USER, DB_PASS, [ \PDO::ATTR_PERSISTENT => TRUE ]);
-			$DB->setAttribute( \PDO::ATTR_EMULATE_PREPARES, TRUE );
-			$DB->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-			$DB->setAttribute( \PDO::ATTR_DEFAULT_FETCH_MODE,\PDO::FETCH_ASSOC );
+			$DB = new \PDO(PDO_DSN,DB_USER, DB_PASS, [\PDO::ATTR_PERSISTENT => TRUE]);
+			$DB->setAttribute(\PDO::ATTR_EMULATE_PREPARES,TRUE);
+			$DB->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
+			$DB->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE,\PDO::FETCH_ASSOC);
 			self::$DB = $DB;
-			return $DB;
-		} catch ( \PDOException $err ) {
-    	Controller::error( __CLASS__, __METHOD__, __LINE__,
-			  "ERROR Model::DB -- 1a: from[". ( ( isset( $_SERVER[ 'HTTP_HOST' ] ) ) ? $_SERVER[ 'HTTP_HOST' ] : ( ( isset( $_SERVER[ 'SERVER_ADDR' ] ) ) ? $_SERVER[ 'SERVER_ADDR' ] : '' ) ). "] > to[". PDO_DSN . "]",
-			  ( ( is_callable([ $err, 'getMessage' ]) ) ? $err->getMessage() . ' - ' . __FILE__ . ':' . __LINE__ : '' ),
+      return $DB;
+		} catch (\PDOException $err) {
+    	\Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__,
+			  "ERROR Model::DB: from[". ((isset($_SERVER['HTTP_HOST']))?$_SERVER['HTTP_HOST'] : ((isset($_SERVER['SERVER_ADDR']))?$_SERVER['SERVER_ADDR'] : '' ) ). "] > to[". PDO_DSN . "]",
+			  ((is_callable([ $err, 'getMessage']) ) ? $err->getMessage() . ' - ' . __FILE__ . ':' . __LINE__ : '' ),
         FALSE,
         $err
       );
 			return NULL;
 		} catch ( \Exception $err ) {
-    	Controller::error( __CLASS__, __METHOD__, __LINE__,
-			  "ERROR Model::DB -- 1a: from[". ( ( isset( $_SERVER[ 'HTTP_HOST' ] ) ) ? $_SERVER[ 'HTTP_HOST' ] : ( ( isset( $_SERVER[ 'SERVER_ADDR' ] ) ) ? $_SERVER[ 'SERVER_ADDR' ] : '' ) ). "] > to[". PDO_DSN . "]",
-			  ( ( is_callable([ $err, 'getMessage' ]) ) ? $err->getMessage() . ' - ' . __FILE__ . ':' . __LINE__ : '' ),
+    	\Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__,
+			  "ERROR Model::DB: from[". ((isset($_SERVER['HTTP_HOST']))?$_SERVER['HTTP_HOST'] : ((isset($_SERVER['SERVER_ADDR']))?$_SERVER['SERVER_ADDR'] : '' ) ). "] > to[". PDO_DSN . "]",
+			  ( ( is_callable([ $err, 'getMessage']) ) ? $err->getMessage() . ' - ' . __FILE__ . ':' . __LINE__ : '' ),
         FALSE,
         $err
       );
@@ -92,13 +92,13 @@ abstract class Model
 	  $result = FALSE;
     $sessid = NULL;
     try {
-      session_set_cookie_params( ONE_MONTH_SECONDS );
-      if ( session_status() == PHP_SESSION_NONE ) {
+      session_set_cookie_params(ONE_MONTH_SECONDS);
+      if (session_status() == PHP_SESSION_NONE) {
         $result = session_start();
       }
     } catch (\Exception $err) {
-      $message = ( ( is_callable([ $err, 'getMessage' ]) ) ? $err->getMessage() : '' );
-      Controller::error( __CLASS__, __METHOD__, __LINE__, $message, $err, TRUE, $err );
+      $message = ( ( is_callable([ $err, 'getMessage']) ) ? $err->getMessage() : '' );
+      \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $message, $err, TRUE, $err );
       return $result;
     }
     return $result;
@@ -132,9 +132,9 @@ abstract class Model
 		foreach ( self::$PDO_ATTR_ as $val ) {
 			$DB_ATTR .= "<b>PDO::ATTR_" . $val . ": </b>" . self::$DB->getAttribute( constant( "PDO::ATTR_" . $val ) ) . "<br/>";
     }
-    $error_ = ( ( isset( self::$DB ) && is_callable( self::$DB, 'errorInfo' ) ) ? : [] );
+    $error_ = ((isset(self::$DB ) && is_callable( self::$DB, 'errorInfo'))?: [] );
 		$message =  ((is_object($message) || is_array($message))? htmlvardump($message):$message);
-    Controller::error( $class, $method, null, $message, [ $error_, $sql, $DB_ATTR ], TRUE );
+    \Stripe\Controller::error( $class, $method, null, $message, [ $error_, $sql, $DB_ATTR ], TRUE );
 	}
 
 	public static function get_sql_error( $sql = NULL )
@@ -147,7 +147,7 @@ abstract class Model
 
 	public static function get_http_root()
 	{
-		return PROTOCOL . $_SERVER[ 'HTTP_HOST' ];
+		return PROTOCOL . $_SERVER['HTTP_HOST'];
 	}
 
 	public static function get_asset_path( $file, $type = 'JS', $force_secure	= FALSE, $force_update = FALSE )

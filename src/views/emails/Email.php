@@ -2,12 +2,12 @@
 namespace Stripe;
 
 if ( !AUTHORIZED ){
-	die( "Hacking Attempt: ". $_SERVER[ 'REMOTE_ADDR' ] );
+	die( "Hacking Attempt: ". $_SERVER['REMOTE_ADDR'] );
 }
 
 abstract class Email
 {
-	public static $email 	 = NULL;
+	public static $email= NULL;
 	public static $subject = NULL;
 	public static $message = NULL;
 
@@ -73,7 +73,7 @@ abstract class Email
 		?></table><?php
 	}
 
-	public static function title( $title='' )
+	public static function title($title='')
 	{
 		?><table cellspacing="0" cellpadding="0" width="100%" height="60" style="border-collapse:collapse;text-align:center;border-color:#e5e5e5;border-style:solid;border-width:0 0 1px 0;"><?php
 			?><tr><td height="4" colspan="3">&nbsp;</td></tr><?php
@@ -101,9 +101,9 @@ abstract class Email
 		?></table><?php
 	}
 
-	public static function comment( $text = null )
+	public static function comment($text=NULL)
 	{
-		if ( isset( $text ) )
+		if (isset($text))
 		{
 			?><tr><td height="30" colspan="3" style="height:30px;">&nbsp;</td></tr><?php
 			?><tr><?php
@@ -131,7 +131,7 @@ abstract class Email
 		}
 	}
 
-	public static function in( $email = "" )
+	public static function in($email="")
 	{
 		self::$email = $email;
 
@@ -173,12 +173,17 @@ abstract class Email
 																			?><td><?php
 	}
 
-	public static function main( $mode = 'in' )
+	public static function main($mode='in')
 	{
-		switch( $mode )
+		switch($mode)
 		{
-			case 'in'  : echo "<table cellspacing='0' cellpadding='0' width='100%' bgcolor'#f5f6f7' style='border-collapse:collapse;'>"; break;
-			case 'out' : echo "</table>"; break;
+			default:
+			case 'in':
+				echo "<table cellspacing='0' cellpadding='0' width='100%' bgcolor'#f5f6f7' style='border-collapse:collapse;'>";
+				break;
+			case 'out':
+				echo "</table>";
+				break;
 		}
 	}
 
@@ -211,7 +216,6 @@ abstract class Email
 			?></body><?php
 		?></html><?php
 	}
-
 
 
 	// == Private methods

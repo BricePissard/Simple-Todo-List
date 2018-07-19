@@ -26,6 +26,9 @@ jQuery && jQuery( function( $ ) {
 			XML		: 'xml'
 		},
 		action_get_webservice: 'get_webservice',
+		/**
+		 * Shortcut to the local API Endpoints.
+		 */
 		endpoint : {
 			account_login   	 : 'account/login.json',
 			account_signin  	 : 'account/signin.json',
@@ -41,11 +44,13 @@ jQuery && jQuery( function( $ ) {
 		min_width: 640, // responsive min width
 		ERROR: 'An error occured, please try later.',
 
-		// -- assets constants
-		IMAGES: 'images',
-		CSS: 'css',
-		JS: 'js',
-
+		/**
+		 * Web-App Initializing method.
+		 *
+		 * @access public
+		 * @param {object} e Load complete event.
+		 * @return {void}
+		 */
 		init: function(e)
 		{
 			$('html,body').addClass('has-js');
@@ -54,23 +59,34 @@ jQuery && jQuery( function( $ ) {
 			stripe.set_cache();
 			stripe.set_toggles();
 			stripe.set_internal_popup_info();
-			if ( global_vars.IS_LOGGED == true ) {
+			if (global_vars.IS_LOGGED == true) {
 				stripe.set_admin_menu();
 			} else {
 				stripe.set_popup_actions();
 			}
 			$('a.nolink').on('click', stripe.nolink_CLICK);
-			$('.noprop').on('click', stripe.noprop_CLICK);
 		},
 
+		/**
+		 * Configure Browser and jQuery request cache.
+		 * @return {void}
+		 */
 		set_cache: function(event)
 		{
-			$.ajaxSetup({ cache: true });
+			$.ajaxSetup({cache: true});
 			if ( typeof window.applicationCache != 'undefined') {
 				window.applicationCache.addEventListener('updateready', stripe.swap_cache, false);
 			}
 		},
 
+		/**
+		 * Setup toggles button.
+		 *
+		 * @access private
+		 * @requires {object} $.toggles() jQuery plugin.
+		 * @see https://github.com/simontabor/jquery-toggles
+		 * @return {void}
+		 */
 		set_toggles: function()
 		{
 			$('.toggle').each( function( index ) {
@@ -98,18 +114,18 @@ jQuery && jQuery( function( $ ) {
 			});
 		},
 
+		/**
+		 * No Link handler to prevent <a href="" /> from beeing clicked.
+		 *
+		 * @access public
+		 * @param {object} e Event on click.
+		 * @return {void}
+		 */
 		nolink_CLICK: function(e)
 		{
 			if (e) {
 				e.preventDefault();
-			}
-		},
-
-		noprop_CLICK: function(e)
-		{
-			if (e) {
-				e.preventDefault();
-				e.stopPropagation();
+				//e.stopPropagation();
 			}
 		},
 
@@ -121,7 +137,7 @@ jQuery && jQuery( function( $ ) {
 				crossDomain: true,
 				jsonp: true,
 				async: true,
-				type: ( ( stripe.isNull( method ) ) ? stripe.method.GET : stripe.method.POST ),
+				type: ( ( stripe.isNull( method))?stripe.method.GET : stripe.method.POST ),
 				dataType: stripe.call_format.JSON,
 				data: params
 			}).done( onSuccess ).fail( onFail );
@@ -133,7 +149,7 @@ jQuery && jQuery( function( $ ) {
 		popup: function( name, onLoad, onClose, POST, hasLoader )
 		{
 			POST = ( ( typeof POST == 'undefined' ) ? {} : POST );
-			var popup_num = ( ( $('#popup_container2' ).is( ':visible' ) ) ? '3' : ( ( $('#popup_container' ).is( ':visible' ) ) ? '2' : '' ) ),
+			var popup_num = ( ( $('#popup_container2' ).is( ':visible'))?'3' : ( ( $('#popup_container' ).is( ':visible'))?'2' : '' ) ),
 			    popup = '#popup_container' + popup_num,
 			    container = '.popup-container-element' + popup_num,
 			    endpoint = 'popups/content.json',
@@ -209,7 +225,7 @@ jQuery && jQuery( function( $ ) {
 			if ( stripe.isNull( stripe.internal_popup ) == false ) {
 				pp = '#' + stripe.internal_popup.attr( 'id' );
 			} else {
-				popup_num = ( ( $( '#popup_container2' ).is( ':visible' ) ) ? '3' : ( ( $( '#popup_container' ).is( ':visible' ) ) ? '2' : '' ) );
+				popup_num = ( ( $( '#popup_container2' ).is( ':visible'))?'3' : ( ( $( '#popup_container' ).is( ':visible'))?'2' : '' ) );
 				pp = '#popup_container' + popup_num;
 			}
 			$( pp + ' .info-popup'   ).hide();
@@ -224,7 +240,7 @@ jQuery && jQuery( function( $ ) {
 			if ( typeof stripe.internal_popup != 'undefined') {
 				pp = '#' + stripe.internal_popup.attr('id');
 			} else {
-				popup_num = ( ( $('#popup_container2' ).is( ':visible' ) ) ? '3' : ( ( $( '#popup_container' ).is( ':visible' ) ) ? '2' : '' ) );
+				popup_num = ( ( $('#popup_container2' ).is( ':visible'))?'3' : ( ( $( '#popup_container' ).is( ':visible'))?'2' : '' ) );
 				pp = '#popup_container' + popup_num;
 			}
 			$( pp + ' .info-popup'   ).hide();

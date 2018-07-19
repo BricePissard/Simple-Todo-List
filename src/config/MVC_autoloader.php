@@ -1,4 +1,4 @@
-<?php if ( !AUTHORIZED ){ die( "Hacking Attempt: ". $_SERVER[ 'REMOTE_ADDR' ] ); }
+<?php if ( !AUTHORIZED ){ die( "Hacking Attempt: ". $_SERVER['REMOTE_ADDR'] ); }
 
 // -- Load local libraries
 require_once( INCLUDES_LIBS . 'PHPMailer.php' );

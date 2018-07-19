@@ -35,76 +35,75 @@ final class Account_model extends \Stripe\Model implements iCRUDS
   public static function create( Array $_data=[] )
   {
     if (
-      isset(     $_data[ 'email' ] ) &&
-      !empty(    $_data[ 'email' ] ) &&
-      is_string( $_data[ 'email' ] ) &&
-      strlen(    $_data[ 'email' ] ) > 0
+      isset(     $_data['email'] ) &&
+      !empty(    $_data['email'] ) &&
+      is_string( $_data['email'] ) &&
+      strlen(    $_data['email'] ) > 0
     ) {
     	if (
-  	   isset(     $_data[ 'password' ] ) &&
-       !empty(    $_data[ 'password' ] ) &&
-       is_string( $_data[ 'password' ] ) &&
-  	   strlen(    $_data[ 'password' ] ) > 0
+  	   isset(     $_data['password'] ) &&
+       !empty(    $_data['password'] ) &&
+       is_string( $_data['password'] ) &&
+  	   strlen(    $_data['password'] ) > 0
       ) {
-    		$password_crypted = self::get_password( $_data[ 'password' ], self::PASSWORD_ENCRYPT );
+    		$password_crypted = self::get_password( $_data['password'], self::PASSWORD_ENCRYPT );
 			}
-
       self::$sql =
       " INSERT IGNORE INTO ". DB_BASE . "." . self::TABLE .
       " ( ".
-       	( ( !isset(  $_data[ 'id'         ] ) ) ? '' : "id," 			   ) .
-        ( ( !isset(  $_data[ 'first_name' ] ) ) ? '' : "first_name," ) .
-        ( ( !isset(  $_data[ 'last_name'  ] ) ) ? '' : "last_name,"  ) .
-        ( ( !isset(  $password_crypted      ) ) ? '' : "password," 	 ) .
+       	( ( !isset(  $_data['id'         ]))?'' : "id," 			   ) .
+        ( ( !isset(  $_data['first_name']))?'' : "first_name," ) .
+        ( ( !isset(  $_data['last_name'  ]))?'' : "last_name,"  ) .
+        ( ( !isset(  $password_crypted     ))?'' : "password," 	 ) .
           												 	                   "email," 		   .
         												 	                     "date_created"  .
       " ) ".
       " VALUES ".
       " ( ".
-      	( ( !isset( $_data[ 'id'         ] ) ) ? '' : 		 	intval(      					 $_data[ 'id'         ] ) . ","  ) .
-        ( ( !isset( $_data[ 'first_name' ] ) ) ? '' : "'" . \Strings::DBTextClean( $_data[ 'first_name' ] ) . "'," ) .
-        ( ( !isset( $_data[ 'last_name'  ] ) ) ? '' : "'" . \Strings::DBTextClean( $_data[ 'last_name'  ] ) . "'," ) .
-        ( ( !isset( $password_crypted      ) ) ? '' : "'" . \Strings::DBTextClean( $password_crypted		  ) . "'," ) .
-              									 		 		              "'" . \Strings::DBTextClean( $_data[ 'email'      ] ) . "',"   .
+      	( ( !isset( $_data['id'         ]))?'' : 		 	intval(      					 $_data['id'         ] ) . ","  ) .
+        ( ( !isset( $_data['first_name']))?'' : "'" . \Strings::DBTextClean( $_data['first_name'] ) . "'," ) .
+        ( ( !isset( $_data['last_name'  ]))?'' : "'" . \Strings::DBTextClean( $_data['last_name'  ] ) . "'," ) .
+        ( ( !isset( $password_crypted     ))?'' : "'" . \Strings::DBTextClean( $password_crypted		  ) . "'," ) .
+              									 		 		              "'" . \Strings::DBTextClean( $_data['email'      ] ) . "',"   .
 																                      "'" . \Strings::DBCurrentDate()						  			    . "' "   .
       " ) " .
-      ( ( isset( $_data[ 'id' ] ) && intval( $_data[ 'id' ] ) > 0 ) ?
+      ((isset($_data['id'] ) && intval( $_data['id'] ) > 0 ) ?
       " ON DUPLICATE KEY UPDATE ".
-      	( ( !isset( $_data[ 'first_name' ] ) ) ? '' : "first_name = '" . \Strings::DBTextClean( $_data[ 'first_name'       ] ) . "'," ) .
-      	( ( !isset( $_data[ 'last_name'  ] ) ) ? '' : "last_name = '" .  \Strings::DBTextClean( $_data[ 'last_name'        ] ) . "'," ) .
-      	( ( !isset( $password_crypted   	 ) ) ? '' : "password = '" . 	 \Strings::DBTextClean( $password_crypted			       ) . "'," ) .
-      	( ( !isset( $_data[ 'email'      ] ) ) ? '' : "email = '" . 	 	 \Strings::DBTextClean( $_data[ 'email'            ] ) . "'," ) .
-        "id = " .          ( ( isset( $_data[ 'id' ] ) && intval( $_data[ 'id' ] ) > 0 ) ? intval( $_data[ 'id' ] ) : "LAST_INSERT_ID( id )" ) . ";"
+      	( ( !isset( $_data['first_name']))?'' : "first_name = '" . \Strings::DBTextClean( $_data['first_name'       ] ) . "'," ) .
+      	( ( !isset( $_data['last_name'  ]))?'' : "last_name = '" .  \Strings::DBTextClean( $_data['last_name'        ] ) . "'," ) .
+      	( ( !isset( $password_crypted   	))?'' : "password = '" . 	 \Strings::DBTextClean( $password_crypted			       ) . "'," ) .
+      	( ( !isset( $_data['email'      ]))?'' : "email = '" . 	 	 \Strings::DBTextClean( $_data['email'            ] ) . "'," ) .
+        "id = " .          ((isset($_data['id'] ) && intval( $_data['id'] ) > 0 ) ? intval( $_data['id'] ) : "LAST_INSERT_ID( id )" ) . ";"
         : ';'
       );
 		  $DB = \Stripe\Model::$DB;
-      $DB = ( ( !$DB ) ? \Stripe\Model::get_db() : $DB );
-      if ( is_callable([ $DB, 'prepare' ]) ) {
+      $DB = ((!$DB)?\Stripe\Model::get_db():$DB);
+      if ( is_callable([ $DB, 'prepare']) ) {
         try {
           $query = $DB->prepare( self::$sql );
-          if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ); }
+          if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo']) === TRUE ) ? $DB->errorInfo() : '' ); }
     			if ( $query->execute() ) {
-            $last_id = intval( ( isset( $_data[ 'id' ] ) && intval( $_data[ 'id' ] ) > 0 ) ?
-              $_data[ 'id' ]
+            $last_id = intval((isset($_data['id'] ) && intval( $_data['id'] ) > 0 ) ?
+              $_data['id']
               :
               $DB->lastInsertId()
             );
     				if (
               $last_id > 0 &&
-    					isset( $_data[ 'password' ] ) &&
-    					isset( $_data[ 'email'    ] )
+    					isset( $_data['password'] ) &&
+    					isset( $_data['email'    ] )
     				) {
     					$account_row_ = self::read([
     						'id' 		   => $last_id,
-    						'email'		 => $_data[ 'email'    ],
-    						'password' => $_data[ 'password' ]
+    						'email'		 => $_data['email'    ],
+    						'password' => $_data['password']
     					]) ;
 
-    					$account_row_ = ( ( isset( $account_row_ ) ) ? $account_row_[ 0 ] : [] );
+    					$account_row_ = ((isset($account_row_))?$account_row_[ 0 ] : [] );
 
     					if (
-                isset(  $account_row_[ 'id' ] ) &&
-                intval( $account_row_[ 'id' ] ) > 0
+                isset(  $account_row_['id'] ) &&
+                intval( $account_row_['id'] ) > 0
               ) {
                 self::set_session( $account_row_ );
                 self::send_email( $account_row_ );
@@ -112,7 +111,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
     				}
          		return $last_id;
           } else {
-            \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ], TRUE, NULL );
+            \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo']) === TRUE ) ? $DB->errorInfo() : ''], TRUE, NULL );
           }
         } catch ( \PDOException $err ) {
           \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
@@ -125,43 +124,40 @@ final class Account_model extends \Stripe\Model implements iCRUDS
   public static function read( Array $_data=[] )
   {
     $_a = [];
-
-    if ( isset( $_data[ 'id' ] ) && self::_control( $_data[ 'id' ] ) === TRUE ) {
+    if ( isset( $_data['id'] ) && self::_control( $_data['id'] ) === TRUE ) {
       self::$sql =
       " SELECT * ".
-      " FROM ". DB_BASE . "." . self::TABLE .
-      " WHERE id = '". intval( $_data[ 'id' ] ) . "' " .
-     		( ( isset( $_data[ 'email' ] ) && !empty( $_data[ 'email' ] ) && is_string( $_data[ 'email' ] ) && strlen( $_data[ 'email' ] ) > 0 ) ? " AND email='" . \Strings::DBTextClean( $_data[ 'email' ] ) . "' " : '' ) .
+      " FROM ". DB_BASE.".".self::TABLE.
+      " WHERE id='".intval( $_data['id'])."' ".
+     		((isset($_data['email'])&&!empty($_data['email']) && is_string( $_data['email'] ) && strlen( $_data['email'] ) > 0 ) ? " AND email='" . \Strings::DBTextClean( $_data['email'] ) . "' " : '' ) .
      	" LIMIT 100;";
-      if ( is_callable([ self::$DB, 'prepare' ]) === TRUE ) {
+      //die(self::$sql);
+      if ( is_callable([ self::$DB, 'prepare']) === TRUE ) {
         try {
           $query = self::$DB->prepare( self::$sql );
-
           if ( !$query ) {
-            self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' );
+            self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo']) === TRUE ) ? $DB->errorInfo() : '' );
           }
     			if ( $query->execute() ) {
     	      for ( $i = 0 ; $row = $query->fetch() ; $i++ ) {
     	        $_a = self::_list( $_a, $row, $i );
             }
-
             // -- Control the account's password only after having checked that the email was in the DB.
             // -- The password is only encrypted in the DB, the data sent through the local API is always decrypted.
             if (
-              isset( $_data[ 'email'    ] ) && !empty( $_data[ 'email' 		] ) && is_string( $_data[ 'email' 	 ] ) && strlen( $_data[ 'email'  	 ] ) > 0 &&
-              isset( $_data[ 'password' ] ) && !empty( $_data[ 'password' ] ) && is_string( $_data[ 'password' ] ) && strlen( $_data[ 'password' ] ) > 0 &&
+              isset( $_data['email'    ] ) && !empty( $_data['email' 		] ) && is_string( $_data['email' 	 ] ) && strlen( $_data['email'  	 ] ) > 0 &&
+              isset( $_data['password'] ) && !empty( $_data['password'] ) && is_string( $_data['password'] ) && strlen( $_data['password'] ) > 0 &&
               isset( $_a ) && !empty( $_a ) && count( $_a ) === 1
             ) {
-              $password_crypted = $_a[ 0 ][ 'password' ]; // <--- password crypted in the DB.
+              $password_crypted = $_a[ 0 ]['password']; // <--- password crypted in the DB.
             	$password_decrypted = self::get_password( $password_crypted, self::PASSWORD_DECRYPT );
-
-              if ( $_data[ 'password' ] !== $password_decrypted ) {
+              if ( $_data['password'] !== $password_decrypted ) {
                 $_a = NULL;
-                \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "Password doesn't match", [ 'sql' => self::$sql, 'data' => $_data ], TRUE, NULL );
+                \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "Password doesn't match", ['sql' => self::$sql, 'data' => $_data ], TRUE, NULL );
               }
       		  }
           } else {
-            \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ], TRUE, NULL );
+            \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ $DB, 'errorInfo']) === TRUE ) ? $DB->errorInfo() : ''], TRUE, NULL );
           }
         } catch ( \PDOException $err ) {
           \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
@@ -177,24 +173,23 @@ final class Account_model extends \Stripe\Model implements iCRUDS
 
   public static function search( Array $_data=[] )
   {
-  	if (isset($_data['password']) && strlen($_data['password']) > 0) {
-  		$password_crypted = self::get_password( $_data[ 'password' ], self::PASSWORD_ENCRYPT );
-		}
-
     $_a = [];
-
+  	if (isset($_data['password']) && strlen($_data['password']) > 0) {
+  		$password_crypted = self::get_password( $_data['password'], self::PASSWORD_ENCRYPT );
+		}
     self::$sql =
     " SELECT * ".
    	" FROM ". DB_BASE . "." . self::TABLE .
    	" WHERE id > 0 ".
-   		( ( isset( $_data[ 'id'         ] ) && intval( $_data[ 'id'         ] ) > 0) ? " AND id = ".  			      intval( 	             $_data[ 'id'         ] ) . "   " : '' ) .
-     	( ( isset( $_data[ 'first_name' ] ) && strlen( $_data[ 'first_name' ] ) > 0) ? " AND first_name LIKE '%". \Strings::DBTextClean( $_data[ 'first_name' ] ) . "%' " : '' ) .
-      ( ( isset( $_data[ 'last_name'  ] ) && strlen( $_data[ 'last_name'  ] ) > 0) ? " AND last_name LIKE '%".  \Strings::DBTextClean( $_data[ 'last_name'  ] ) . "%' " : '' ) .
-      ( ( isset( $_data[ 'email'      ] ) && strlen( $_data[ 'email'      ] ) > 0) ? " AND email = '".  		    \Strings::DBTextClean( $_data[ 'email'      ] ) . "'  " : '' ) .
-      ( ( isset( $_data[ 'password'   ] ) && strlen( $_data[ 'password'   ] ) > 0) ? " AND password = '".  	    \Strings::DBTextClean( $password_crypted		  ) . "'  " : '' ) .
+   		((isset($_data['id'        ] ) && intval( $_data['id'         ] ) > 0) ? " AND id = ".  			      intval( 	             $_data['id'         ] ) . "   " : '' ) .
+     	((isset($_data['first_name'] ) && strlen( $_data['first_name'] ) > 0) ? " AND first_name LIKE '%". \Strings::DBTextClean( $_data['first_name'] ) . "%' " : '' ) .
+      ((isset($_data['last_name' ] ) && strlen( $_data['last_name'  ] ) > 0) ? " AND last_name LIKE '%".  \Strings::DBTextClean( $_data['last_name'  ] ) . "%' " : '' ) .
+      ((isset($_data['email'     ] ) && strlen( $_data['email'      ] ) > 0) ? " AND email = '".  		    \Strings::DBTextClean( $_data['email'      ] ) . "'  " : '' ) .
+      ((isset($_data['password'  ] ) && strlen( $_data['password'   ] ) > 0) ? " AND password = '".  	    \Strings::DBTextClean( $password_crypted		  ) . "'  " : '' ) .
     " LIMIT 100;";
-
-    if (is_callable([self::$DB, 'prepare']) ) {
+    $DB = \Stripe\Model::$DB;
+    $DB = ((!$DB)?\Stripe\Model::get_db():$DB);
+    if (is_callable([self::$DB,'prepare'])) {
       try {
         $query = self::$DB->prepare( self::$sql );
         if (!$query) {self::error( __CLASS__, __METHOD__, self::$sql, (is_callable([ $DB, 'errorInfo']) === TRUE)? $DB->errorInfo() : '');}
@@ -203,7 +198,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
   	        $_a = self::_list($_a, $row, $i);
           }
         } else {
-          \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ self::$DB, 'errorInfo' ]) === TRUE ) ? self::$DB->errorInfo() : '' ], TRUE, NULL );
+          \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, "SQL Error", [ "sql" => self::$sql, "error" => ( is_callable([ self::$DB, 'errorInfo']) === TRUE ) ? self::$DB->errorInfo() : ''], TRUE, NULL );
         }
       } catch ( \PDOException $err ) {
         \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
@@ -215,21 +210,21 @@ final class Account_model extends \Stripe\Model implements iCRUDS
   public static function delete( Array $_data=[] )
   {
     if (
-      isset( $_data[ 'id' ] ) &&
-      self::_control( $_data[ 'id' ] ) === TRUE
+      isset( $_data['id'] ) &&
+      self::_control( $_data['id'] ) === TRUE
     ) {
       self::$sql =
       " DELETE FROM ". DB_BASE . "." . self::TABLE .
-      " WHERE id = " . intval( $_data[ 'id' ] ) .
+      " WHERE id = " . intval( $_data['id'] ) .
       ";";
-      if ( is_callable([ self::$DB, 'prepare' ]) === TRUE ) {
+      if ( is_callable([ self::$DB, 'prepare']) === TRUE ) {
         try {
           $query = self::$DB->prepare( self::$sql );
-          if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' ); }
+          if ( !$query ) { self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo']) === TRUE ) ? $DB->errorInfo() : '' ); }
     			if ( $query->execute() === TRUE ) {
             return TRUE;
           } else {
-            self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo' ]) === TRUE ) ? $DB->errorInfo() : '' );
+            self::error( __CLASS__, __METHOD__, self::$sql, ( is_callable([ $DB, 'errorInfo']) === TRUE ) ? $DB->errorInfo() : '' );
           }
         } catch ( \PDOException $err ) {
           \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql, TRUE, $err );
@@ -298,10 +293,10 @@ final class Account_model extends \Stripe\Model implements iCRUDS
 	public static function update_session()
 	{
 		if (
-      isset(  $_SESSION[ 'ACCOUNT' ][ 'id' ] ) &&
-      intval( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) > 0
+      isset(  $_SESSION['ACCOUNT']['id'] ) &&
+      intval( $_SESSION['ACCOUNT']['id'] ) > 0
     ) {
-			$r_ = self::read([ "id" => $_SESSION[ 'ACCOUNT' ][ 'id' ] ]);
+			$r_ = self::read([ "id" => $_SESSION['ACCOUNT']['id'] ]);
 			if (
         isset(  $r_ ) &&
         !empty( $r_ ) &&
@@ -348,9 +343,9 @@ final class Account_model extends \Stripe\Model implements iCRUDS
    */
   private static function send_email( Array $account_row_ = [] )
   {
-    \Stripe\Email_validate_view::$email = $account_row_[ 'email' ];
+    \Stripe\Email_validate_view::$email = $account_row_['email'];
     return \Stripe\Emails_model::send(
-      $account_row_[ 'email' ],
+      $account_row_['email'],
       "Welcome to the Todo App!",
       \Stripe\Email_validate_view::output()
     );
@@ -365,7 +360,7 @@ final class Account_model extends \Stripe\Model implements iCRUDS
    */
   private static function _control( $id = NULL )
   {
-    return ( ( isset( $id ) && !empty( $id ) && intval( $id ) > 0 ) ? TRUE : FALSE );
+    return ((isset($id ) && !empty( $id ) && intval( $id ) > 0 ) ? TRUE : FALSE );
   }
 
   private static function _list( $_a, $row, $i = 0 )
@@ -375,12 +370,12 @@ final class Account_model extends \Stripe\Model implements iCRUDS
       !empty( $row )
     ) {
    		array_push( $_a, [
-        'id' 				   => ( ( isset( $row[ "id"           ] ) ) ? intval(	               $row[ "id"           ] ) : NULL ),
-        'first_name' 	 => ( ( isset( $row[ "first_name"   ] ) ) ? \Strings::DBTextToWeb( $row[ "first_name"   ] ) : NULL ),
-        'last_name' 	 => ( ( isset( $row[ "last_name"    ] ) ) ? \Strings::DBTextToWeb( $row[ "last_name"    ] ) : NULL ),
-        'password' 		 => ( ( isset( $row[ "password"     ] ) ) ? \Strings::DBTextToWeb( $row[ "password"     ] ) : NULL ),
-        'date_created' => ( ( isset( $row[ "date_created" ] ) ) ? \Strings::DBTextClean( $row[ "date_created" ] ) : NULL ),
-        'email' 			 => ( ( isset( $row[ "email"        ] ) ) ? \Strings::DBTextToWeb( $row[ "email"        ] ) : NULL )
+        'id' 				   => ((isset($row[ "id"           ]))?intval(	               $row[ "id"           ] ) : NULL ),
+        'first_name' 	 => ((isset($row[ "first_name"   ]))?\Strings::DBTextToWeb( $row[ "first_name"   ] ) : NULL ),
+        'last_name' 	 => ((isset($row[ "last_name"    ]))?\Strings::DBTextToWeb( $row[ "last_name"    ] ) : NULL ),
+        'password' 		 => ((isset($row[ "password"     ]))?\Strings::DBTextToWeb( $row[ "password"     ] ) : NULL ),
+        'date_created' => ((isset($row[ "date_created" ]))?\Strings::DBTextClean( $row[ "date_created" ] ) : NULL ),
+        'email' 			 => ((isset($row[ "email"        ]))?\Strings::DBTextToWeb( $row[ "email"        ] ) : NULL )
       ]);
     }
     return $_a;

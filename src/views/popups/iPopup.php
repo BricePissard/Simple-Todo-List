@@ -2,7 +2,7 @@
 namespace Stripe;
 
 if ( !AUTHORIZED ) {
-  die( "Hacking Attempt: ". $_SERVER[ 'REMOTE_ADDR' ] );
+  die( "Hacking Attempt: ". $_SERVER['REMOTE_ADDR'] );
 }
 
 /**
