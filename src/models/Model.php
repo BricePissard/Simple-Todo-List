@@ -69,7 +69,7 @@ abstract class Model
 			return NULL;
 		} catch ( \Exception $err ) {
     	\Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__,
-			  "ERROR Model::DB: from[". ((isset($_SERVER['HTTP_HOST']))?$_SERVER['HTTP_HOST'] : ((isset($_SERVER['SERVER_ADDR']))?$_SERVER['SERVER_ADDR'] : '' ) ). "] > to[". PDO_DSN . "]",
+			  "ERROR Model::DB: from[". ((isset($_SERVER['HTTP_HOST']))?$_SERVER['HTTP_HOST']:((isset($_SERVER['SERVER_ADDR']))?$_SERVER['SERVER_ADDR']:''))."] > to[".PDO_DSN."]",
 			  ( ( is_callable([ $err, 'getMessage']) ) ? $err->getMessage() . ' - ' . __FILE__ . ':' . __LINE__ : '' ),
         FALSE,
         $err
@@ -97,8 +97,8 @@ abstract class Model
         $result = session_start();
       }
     } catch (\Exception $err) {
-      $message = ( ( is_callable([ $err, 'getMessage']) ) ? $err->getMessage() : '' );
-      \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $message, $err, TRUE, $err );
+      $message = ((is_callable([$err, 'getMessage']))?$err->getMessage():'');
+      \Stripe\Controller::error(__CLASS__,__METHOD__,__LINE__,$message,$err,TRUE,$err);
       return $result;
     }
     return $result;
@@ -118,7 +118,7 @@ abstract class Model
     return md5(
       $request .
       ((isset($_SERVER['SERVER_ADDR']))? $_SERVER['SERVER_ADDR']:'') .
-      ( ( isset(self::$DB) && is_callable(self::$DB, 'getAttribute')) ?
+      ((isset(self::$DB) && is_callable(self::$DB, 'getAttribute'))?
         self::$DB->getAttribute( constant( "PDO::ATTR_CONNECTION_STATUS"))
         : ''
       ),
@@ -126,38 +126,36 @@ abstract class Model
     );
   }
 
-	public static function error( $class, $method, $sql = '', $message = '' )
+	public static function error($class,$method,$sql='',$message='')
 	{
 		$DB_ATTR = "";
-		foreach ( self::$PDO_ATTR_ as $val ) {
-			$DB_ATTR .= "<b>PDO::ATTR_" . $val . ": </b>" . self::$DB->getAttribute( constant( "PDO::ATTR_" . $val ) ) . "<br/>";
+		foreach (self::$PDO_ATTR_ as $val) {
+			$DB_ATTR.="<b>PDO::ATTR_".$val.": </b>".self::$DB->getAttribute(constant("PDO::ATTR_".$val))."<br/>";
     }
-    $error_ = ((isset(self::$DB ) && is_callable( self::$DB, 'errorInfo'))?: [] );
-		$message =  ((is_object($message) || is_array($message))? htmlvardump($message):$message);
-    \Stripe\Controller::error( $class, $method, null, $message, [ $error_, $sql, $DB_ATTR ], TRUE );
-	}
-
-	public static function get_sql_error( $sql = NULL )
-	{
-		return (($sql!=NULL && DEBUG && DEBUG_IP==$_SERVER['REMOTE_ADDR'] ) ?
-		  "<br/><pre>" . ( ( PROD === FALSE ) ? $sql : '' ) . "</pre>"
-      : ''
-    );
+    $error_=((isset(self::$DB ) && is_callable( self::$DB, 'errorInfo'))?:[]);
+		$message=((is_object($message)||is_array($message))?htmlvardump($message):$message);
+    \Stripe\Controller::error($class,$method,NULL,$message,[$error_,$sql,$DB_ATTR],TRUE);
 	}
 
 	public static function get_http_root()
 	{
-		return PROTOCOL . $_SERVER['HTTP_HOST'];
+		return PROTOCOL.$_SERVER['HTTP_HOST'];
 	}
 
-	public static function get_asset_path( $file, $type = 'JS', $force_secure	= FALSE, $force_update = FALSE )
+	public static function get_asset_path($file,$type='JS',$is_ssl=FALSE,$is_update=FALSE)
 	{
 		$path = self::get_http_root();
 		switch ( $type ) {
-			case 'JS': $path .= JS.$file; break;
-			case 'CSS': $path .= CSS.$file; break;
-			case 'IMG': $path .= IMG.$file; break;
+			case 'JS':
+				$path.=JS.$file;
+				break;
+			case 'CSS':
+				$path.=CSS.$file;
+				break;
+			case 'IMG':
+				$path.=IMG.$file;
+				break;
 		}
-		return $path . ( ( $force_update === TRUE ) ? "?v=" . date( 'U' ) : '' );
+		return $path.(($is_update===TRUE)?"?v=".date('U'):'');
 	}
 }

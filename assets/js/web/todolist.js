@@ -59,8 +59,7 @@ stripe.todolist =
 		}
 
 		stripe.get_api_call(
-			stripe.endpoint.todolist_status,
-			{
+			stripe.endpoint.todolist_status, {
 				key			 : global_vars.KEY,
 				language : global_vars.LANG,
 				id 			 : id,

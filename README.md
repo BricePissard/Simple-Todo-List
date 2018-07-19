@@ -162,12 +162,12 @@ Replace the following lines by your settings between the lines [3 > 13].
 define('DEFAULT_CHARSET','UTF-8');
 define('DB_BASE',        'stripe');
 define('DB_USER',        'stripe_user');
-define('DB_PASS',        'xxxxxx');// Replace this password by the one you've set.
-define('SUB_DOMAIN_NAME','stripe'); 		    // Your server subdomaine.
-define('DOMAIN_NAME', 	 'robby.ai'); 			// Your server domain name.
-define('DEBUG_IP',       '89.2.69.205'); 	  // Your local debug IP addresss.
-define('DB_HOST_WWW', 	 '91.121.80.48');   // Your PROD server IP,(www) 	> https://stripe.robby.ai
-define('DB_HOST_LOCAL',  '127.0.0.1');      // Your DEV server IP, (local) > http://localhost:8080
+define('DB_PASS',        'xxxxxx');       // Replace this password by the one you've set.
+define('SUB_DOMAIN_NAME','stripe'); 		  // Your server sub-domaine.
+define('DOMAIN_NAME', 	 'robby.ai'); 		// Your server domain name.
+define('DEBUG_IP',       '89.2.69.205'); 	// Your local debug IP address.
+define('DB_HOST_WWW', 	 '91.121.80.48'); // Your PROD server IP,(www)   > https://stripe.robby.ai
+define('DB_HOST_LOCAL',  '127.0.0.1');    // Your DEV server IP, (local) > http://localhost:8080
 define( 'ERRORS_LOG','/home/www/apache2_logs/php.stripe.errors.log'); // error log file
 //_________ [ END EDIDATE ] ____________________________________________________
 ```
