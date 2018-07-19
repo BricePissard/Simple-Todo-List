@@ -1,9 +1,9 @@
 /**!
  * @author Brice Pissard
- * @copyright Copyright Brice Pissard
+ * @copyright Copyright @BricePissard
  * @name stripe
- * @require {object} 	global_vars
- * @require {class}  	jQuery
+ * @requires {object}	global_vars
+ * @requires {class} 	jQuery
  **/
 "use strict";
 var stripe={};

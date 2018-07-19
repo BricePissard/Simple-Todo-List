@@ -31,27 +31,27 @@ define('ONE_DAY_SECONDS',     ONE_HOUR_SECONDS*24  ); // 86400s
 define('ONE_WEEK_SECONDS',    ONE_DAY_SECONDS*7    ); // 604800s
 define('ONE_MONTH_SECONDS',   ONE_DAY_SECONDS*30   ); // 2592000s
 // -- Server local path -------------------------------
-define('WEB_PATH', 		str_replace('/src/config','',__DIR__));// >> /home/www/stripe.robby.ai
-define('CURRENT_SITE_FOLDER','/'                          ); // >> /
-define('SITE_PATH', 	 WEB_PATH.CURRENT_SITE_FOLDER 			); // >> /home/www/stripe.robby.ai/
-define('INCLUDES_PATH',WEB_PATH.CURRENT_SITE_FOLDER."src/"); // >> /home/www/stripe.robby.ai/src/
+define('WEB_PATH',     str_replace('/src/config','',__DIR__)); // >> /home/www/stripe.robby.ai
+define('CURRENT_SITE_FOLDER','/'                            ); // >> /
+define('SITE_PATH', 	 WEB_PATH.CURRENT_SITE_FOLDER         ); // >> /home/www/stripe.robby.ai/
+define('INCLUDES_PATH',WEB_PATH.CURRENT_SITE_FOLDER."src/"  ); // >> /home/www/stripe.robby.ai/src/
 // --- MVC constants ----------------------------------
-define('INCLUDES_ROOT',     INCLUDES_PATH 		            ); // >> /home/www/stripe.robby.ai/src/
-define('INCLUDES_CONFIG',   INCLUDES_ROOT.'config/'       ); // >> /home/www/stripe.robby.ai/src/config/
+define('INCLUDES_ROOT',     INCLUDES_PATH                   ); // >> /home/www/stripe.robby.ai/src/
+define('INCLUDES_CONFIG',   INCLUDES_ROOT.'config/'         ); // >> /home/www/stripe.robby.ai/src/config/
 // -- 							Relatives paths
-define('LIBS_PATH',					'libs/'	            								); // >> libs/
-define('MODELS_PATH',				'models/'	            							); // >> models/
-define('VIEWS_PATH',				'views/'	            							); // >> views/
-define('CONTROLLERS_PATH',	'controllers/'         							); // >> controllers/
-define('API_ROOT_PATH',			'api/'	            								); // >> api/
-define('API',	CURRENT_SITE_FOLDER.API_ROOT_PATH	); // >> /api/
-define('ASSETS',						CURRENT_SITE_FOLDER.'assets/'     ); // >> /assets/
-define('IMG',								ASSETS . 'img/' 	            			); // >> /assets/img/
-define('CSS',								ASSETS . 'css/' 	            			); // >> /assets/css/
-define('JS',								ASSETS . 'js/' 	            				); // >> /assets/js/
+define('LIBS_PATH',         'libs/'                         ); // >> libs/
+define('MODELS_PATH',       'models/'                       ); // >> models/
+define('VIEWS_PATH',        'views/'                        ); // >> views/
+define('CONTROLLERS_PATH',  'controllers/'                  ); // >> controllers/
+define('API_ROOT_PATH',     'api/'                          ); // >> api/
+define('API',	CURRENT_SITE_FOLDER.API_ROOT_PATH	            ); // >> /api/
+define('ASSETS',            CURRENT_SITE_FOLDER.'assets/'   ); // >> /assets/
+define('IMG',               ASSETS.'img/'                   ); // >> /assets/img/
+define('CSS',               ASSETS.'css/'                   ); // >> /assets/css/
+define('JS',                ASSETS.'js/'                    ); // >> /assets/js/
 // -- 						Absolute paths
-define('INCLUDES_LIBS',     INCLUDES_ROOT . LIBS_PATH   	      ); // >> /home/www/stripe.robby.ai/src/libs/
-define('INCLUDES_MODELS',   INCLUDES_ROOT . MODELS_PATH   	    ); // >> /home/www/stripe.robby.ai/src/models/
-define('INCLUDES_CONTROLLERS',INCLUDES_ROOT.CONTROLLERS_PATH    ); // >> /home/www/stripe.robby.ai/src/controllers/
-define('INCLUDES_VIEWS',    INCLUDES_ROOT . VIEWS_PATH    	    ); // >> /home/www/stripe.robby.ai/src/views/
-define('INCLUDES_API',  	  INCLUDES_ROOT . API_ROOT_PATH	      ); // >> /home/www/stripe.robby.ai/src/api/
+define('INCLUDES_LIBS',     INCLUDES_ROOT . LIBS_PATH   	  ); // >> /home/www/stripe.robby.ai/src/libs/
+define('INCLUDES_MODELS',   INCLUDES_ROOT . MODELS_PATH     ); // >> /home/www/stripe.robby.ai/src/models/
+define('INCLUDES_CONTROLLERS',INCLUDES_ROOT.CONTROLLERS_PATH); // >> /home/www/stripe.robby.ai/src/controllers/
+define('INCLUDES_VIEWS',    INCLUDES_ROOT . VIEWS_PATH      ); // >> /home/www/stripe.robby.ai/src/views/
+define('INCLUDES_API',  	  INCLUDES_ROOT . API_ROOT_PATH   ); // >> /home/www/stripe.robby.ai/src/api/

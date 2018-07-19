@@ -137,7 +137,7 @@ final class Logger
 			?><section id="signup-popdown" class="internal"><?php
 				\Stripe\Logger::get_signin_block( 'ACCOUNT_SIGNIN', NULL, ((isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER'] : NULL ) );
 			?></section><?php
-			?><script>if (jQuery) {jQuery( document ).ready( stripe.set_popup_actions );}</script><?php
+			?><script>if (jQuery) {jQuery( document ).ready( stripe.set_popup_signup_actions );}</script><?php
 			die;
 		}
 	}
