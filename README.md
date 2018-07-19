@@ -306,49 +306,80 @@ the development or optimize the code because it was on the purpose of this progr
 #### 3.3.1 - External tools
 The external tools that have been deliberately not selected at first should be used for later development:
 -   CSS: LESS/SASS YUI Compressor.
--   JS: Google Closure.
+-   JS: Google Closure, JS Obfuscator, Google Page Speed
 -   PHP: Composer, Eloquent, PHPUnits, PHPDocs, PHP-CS.
 -   SSH: Deployment scripts, Docker.
--   Apache: Module Memcached or Redis.
+-   Apache: Module Memcached, Redis.
 -   Git: Travis.
 
-#### 3.3.2 - Full-JS WebApp
+#### 3.3.2 - Unit Test and Continuous Integration
+When a program get more complex it is required industrialize the testing process
+on a server-side, using a set of tools that control several part of the program:
+-   PHP Units to control the integrity of the code.
+-   Jmetter and code optimization to test the quality of the code.
+-   Travis sync with Git/GitHub for Continuous Integration.
+-   Docker to sync the deployment on several environment.
+
+#### 3.3.3 - Cache / Backup / Load-Balancer
+When a program get more traffic it become necessary to optimize the bandwidth and
+to optimize the data delivered to the clients.
+Several tools can be set up:
+-   Cache the content to prevent multiple unnecessary Database call using Memcahed or Redis.
+-   Split and Backup the old content in different DB servers to speedup the Database request.
+-   Create Cluster of auto-replicated Database servers behind a Load-Balancer.
+
+#### 3.3.4 - Full-JS WebApp
 Even is it haven't been selected as an initial Framework, using a Full JS Web-App
 through Node.js and ReactJS have to be considered: it have the benefits of allowing
 to use the same team for the backend, frontend and mobile app development.
 
-#### 3.3.3 - Migration from MySQL > Casandra
+#### 3.3.5 - Migration from MySQL > Casandra
 A large development of this Web-App should end in a volume of entries that will require
 a migration of the Database from MySQL to another more robust Database (relational or not, like Casandra),
 the structure of the Models of the current software make this migration very easy.
 
-#### 3.3.4 - Migration from PHP > Java
+#### 3.3.6 - Migration from PHP > Java
 A very large development of this Web-App should end in the migration to a Java backend.
 The current development of the Web-App make this migration very easy.
 Any further development that implies the work of different developers on the same
 software require the use of a well known Framework (either in PHP or Java).
 
-#### 3.3.5 - Migration from Apache to Node.js, Gnix or Cloud Based
+#### 3.3.7 - Migration from Apache to Node.js, Gnix or Cloud Based (GC, AWS, OVH...)
 A large development of this Web-App should end in the migration to another type of
 server or in a cloud base environment.
 Specific servers can also be used for specific purpose (static server for assets content).
 The current development of the Web-App make this migration very easy.
 
-#### 3.3.6 - API under OAuth2
+#### 3.3.8 - API under OAuth2
 A good approach of a modern software is to open its code to a wider community.
 For a future development the API should be ported to OAuth2 and opened to other users.
 This will allows the users to interact with the software from out of the app.
 
-#### 3.3.7 - External GitHub Repositories
+#### 3.3.9 - External GitHub Repositories
 To facilitate the development it can be useful to split some non-core elements
 of the software in external GitHub repositories, to allows the development by
 third-party or by out-source organization. Ex: View components, libraries...
 
+#### 3.3.10 - Internationalization (I18n)
+For future development and internationalization it could be required to translate
+the Web-App into static JSON or XML files and to apply a simple function to set the translation
+to the according user language, Ex:
+-   ./I18n/en_US.json => {...,'text_to_translate': "text to translate",...}
+-   ./libs/Translate.php => function _e($t) { return $translate_[$t]; }
+-   in the Views files replace the <?="text to translate";?> by <?=_e('text_to_translate');?>
+
+#### 3.3.11 - SEO
+For a website to get more traffic it is required to apply some pages and scripts:
+-   Create static pages with content with keywords.
+-   Optimized URL with keywords.
+-   Sitemaps generator and script for Google for Webmaster.
 
 ________________________________________________________________________________
 
 
 ## 4 - Copyright & License
+
+author @BricePissard
 
 License
 ----

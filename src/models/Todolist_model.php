@@ -6,7 +6,7 @@ if (!AUTHORIZED) {
 }
 
 /**
- * Database structure:
+ * Database table structure:
  *
  * CREATE TABLE `todolist` (
  *   `id`            bigint(15)               UNSIGNED NOT NULL COMMENT 'Unique Todo identifier',
@@ -43,7 +43,13 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
 
   public static $sql = NULL;
 
-  public static function create( $_data )
+  /**
+   * Create or Update a Todo.
+   *
+   * @param {array} $_data Data to import to the database table.
+   * @return {int} id of the current Todo inserted or updated, -1 in case of error.
+   */
+  public static function create( Array $_data=[] )
   {
     if (
 	   isset(  $_data[ 'accountId' ] ) &&
@@ -53,14 +59,14 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
       self::$sql =
       " INSERT IGNORE INTO ". DB_BASE . "." . self::TABLE .
       " ( ".
-       	( ( !isset(  $_data[ 'id'        ] ) ) ? '' : "id," 			 )  .
-        ( ( !isset(  $_data[ 'accountId' ] ) ) ? '' : "accountId," )  .
-        ( ( !isset(  $_data[ 'name'      ] ) ) ? '' : "name,"      )  .
-        ( ( !isset(  $_data[ 'position'  ] ) ) ? '' : "position,"  )  .
-        ( ( !isset(  $_data[ 'status'    ] ) ) ? '' : "status,"    )  .
-        ( ( !isset(  $_data[ 'state'     ] ) ) ? '' : "state,"     )  .
-          												 	                  "date_created," .
-                                                      "date_updated"  .
+       	( ( !isset($_data[ 'id'       ] ) ) ? '' : "id," 			).
+        ( ( !isset($_data[ 'accountId'] ) ) ? '' : "accountId,").
+        ( ( !isset($_data[ 'name'     ] ) ) ? '' : "name,"     ).
+        ( ( !isset($_data[ 'position' ] ) ) ? '' : "position," ).
+        ( ( !isset($_data[ 'status'   ] ) ) ? '' : "status,"   ).
+        ( ( !isset($_data[ 'state'    ] ) ) ? '' : "state,"    ).
+        "date_created," .
+        "date_updated"  .
       " ) ".
       " VALUES ".
       " ( ".
@@ -105,7 +111,16 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
     return -1;
   }
 
-  public static function read( $_data )
+  /**
+   * Read a specific account Todo.
+   *
+   * @param {array} $_data Data to filter to the database table to read, ex: [
+   *  'accountId' => 123,
+   *  'state' => 'ACTIVE'
+   * ]
+   * @return {array} array of database table fields, returns an empty array in case of error.
+   */
+  public static function read( Array $_data=[] )
   {
     $_a = [];
     if ( isset( $_data[ 'accountId' ] ) && intval( $_data[ 'accountId' ] ) > 0 ) {
@@ -131,7 +146,7 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
     return $_a;
   }
 
-  public static function count( $_data )
+  public static function count( Array $_data=[] )
   {
     $_a = 0;
     if ( isset( $_data[ 'accountId' ] ) && intval( $_data[ 'accountId' ] ) > 0 ) {
@@ -156,7 +171,7 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
     return $_a;
   }
 
-  public static function update_positions( $_data )
+  public static function positions( Array $_data=[] )
   {
     $values_ = [];
     foreach( $_data[ 'positions' ] as $pos_ ) {
@@ -187,7 +202,7 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
     return TRUE;
   }
 
-  public static function delete( $_data )
+  public static function delete( Array $_data=[] )
   {
     if (
       isset(  $_data[ 'id' ] ) &&
@@ -229,23 +244,23 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
     return FALSE;
   }
 
-	public static function search( $name = '' ) {}
+	public static function search( Array $_data=[] ) {}
 
 
   // -- Private methods
 
 	private static function _list($_a, $row, $i=0)
 	{
-    if ( isset($row) && !empty($row) ) {
+    if (isset($row) && !empty($row)) {
       array_push( $_a, [
-        'id'            => ( ( isset( $row[ 'id'           ] ) ) ? $row[ 'id'           ] : NULL ),
-        'accountId'     => ( ( isset( $row[ 'accountId'    ] ) ) ? $row[ 'accountId'    ] : NULL ),
-        'name'          => ( ( isset( $row[ 'name'         ] ) ) ? $row[ 'name'         ] : NULL ),
-        'position'      => ( ( isset( $row[ 'position'     ] ) ) ? $row[ 'position'     ] : NULL ),
-        'status'        => ( ( isset( $row[ 'status'       ] ) ) ? $row[ 'status'       ] : NULL ),
-        'state'         => ( ( isset( $row[ 'state' 		   ] ) ) ? $row[ 'state'        ] : NULL ),
-        'date_created'  => ( ( isset( $row[ 'date_created' ] ) ) ? $row[ 'date_created' ] : NULL ),
-        'date_updated'  => ( ( isset( $row[ 'date_updated' ] ) ) ? $row[ 'date_updated' ] : NULL )
+        'id'          => ((isset( $row[ 'id'          ]))? $row['id'           ] : NULL ),
+        'accountId'   => ((isset( $row[ 'accountId'   ]))? $row['accountId'    ] : NULL ),
+        'name'        => ((isset( $row[ 'name'        ]))? $row['name'         ] : NULL ),
+        'position'    => ((isset( $row[ 'position'    ]))? $row['position'     ] : NULL ),
+        'status'      => ((isset( $row[ 'status'      ]))? $row['status'       ] : NULL ),
+        'state'       => ((isset( $row[ 'state' 		  ]))? $row['state'        ] : NULL ),
+        'date_created'=> ((isset( $row[ 'date_created']))? $row['date_created' ] : NULL ),
+        'date_updated'=> ((isset( $row[ 'date_updated']))? $row['date_updated' ] : NULL )
       ]);
     }
     return $_a;

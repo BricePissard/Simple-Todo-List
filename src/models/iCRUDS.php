@@ -10,8 +10,8 @@ if (!AUTHORIZED) {
  */
 interface iCRUDS
 {
-  public static function create( $_data );
-  public static function read( $_data );
-  public static function delete( $_data );
-  public static function search( $_data );
+  public static function create( Array $_data = [] );
+  public static function read( Array $_data = [] );
+  public static function delete( Array $_data = [] );
+  public static function search( Array $_data = [] );
 }

@@ -9,8 +9,6 @@
  * @param first_name		{string} [OPTIONAL] user first name.
  * @param last_name     {string} [OPTIONAL] user last name.
  */
-\Stripe\Emails_model::send( 'robby.assistant@gmail.com', 'hello', 'message' );
-
 API_result(
 	\Stripe\Account_controller::get_signin(
 		( ( isset( $redirect ) ) ? $redirect : NULL ),

@@ -11,6 +11,7 @@ final class Todolist_controller extends \Stripe\Controller
 	 * Get the list of current Active todos.
 	 * The user MUST be logged-in to use this method.
 	 *
+	 * @access public
 	 * @return {array}
 	 */
 	public static function get_list()
@@ -29,6 +30,7 @@ final class Todolist_controller extends \Stripe\Controller
 	 * Add a Todo to the list.
 	 * The user MUST be logged-in to use this method.
 	 *
+	 * @access public
 	 * @param {array} with the attributes: 'name': name of the todo to insert.
 	 * @return {array}
 	 */
@@ -59,6 +61,7 @@ final class Todolist_controller extends \Stripe\Controller
 	 * Delete a Todo from the list.
 	 * The user MUST be logged-in to use this method.
 	 *
+	 * @access public
 	 * @param {array} with the attributes:
 	 *									'id': id of the todo to insert, refers to the DB table field `todolist`.`id`
 	 * @return {array}
@@ -85,6 +88,7 @@ final class Todolist_controller extends \Stripe\Controller
 	 * Change a Todo status, can take the values 'TODO' or 'DONE'.
 	 * The user MUST be logged-in to use this method.
 	 *
+	 * @access public
 	 * @param {array} with the attributes:
 	 *									'status': status of the todo to modify.
 	 *									'id': id of the todo to insert, refers to the DB table field `todolist`.`id`
@@ -119,6 +123,7 @@ final class Todolist_controller extends \Stripe\Controller
 	 * Change the name of a Todo.
 	 * The user MUST be logged-in to use this method.
 	 *
+	 * @access public
 	 * @param {array} with the attributes:
 	 *									'name': new name of the todo.
 	 *									'id': id of the todo to insert, refers to the DB table field `todolist`.`id`
@@ -150,6 +155,7 @@ final class Todolist_controller extends \Stripe\Controller
 	 * Reorder all the ACTIVE Todos positions for this account.
 	 * The user MUST be logged-in to use this method.
 	 *
+	 * @access public
 	 * @param {array} with the attributes:
 	 *									'positions': {array} Array of coupled .
 	 *									'id': {int} id of the todo to insert, refers to the DB table field `todolist`.`id`
@@ -160,7 +166,7 @@ final class Todolist_controller extends \Stripe\Controller
 		$RESULT_ = [];
 		if ( isset( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) && intval( $_SESSION[ 'ACCOUNT' ][ 'id' ] ) > 0 ) {
 			if ( isset( $data_[ 'positions' ] ) && !empty( $data_[ 'positions' ] ) ) {
-				$result = \Stripe\Todolist_model::update_positions([
+				$result = \Stripe\Todolist_model::positions([
 					'positions' => $data_[ 'positions' ]
 				]);
 				if ( $result == TRUE ) {
