@@ -292,7 +292,7 @@ future development on it, so it have been started with:
 -   Server-side `Error Logs` to store and debug the app from the server.
 -   All the code from backend to frontend is `Object-Oriented`.
 -   Create the web view as HTML and CSS `Responsive`.
--   Create a minimum Web-App JS Core with `popup support`.
+-   Create a minimum Web-App JS Core with: `popup support`, global loader, popup loader content, JS cache
 
 ________________________________________________________________________________
 
