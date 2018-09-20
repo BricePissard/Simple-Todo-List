@@ -70,14 +70,14 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
       " ) ".
       " VALUES ".
       " ( ".
-      	( ( !isset( $_data['id'        ]))?'' : 		   intval(		           	$_data['id'        ] ) . ", " ) .
-        ( ( !isset( $_data['accountId']))?'' :       intval(                $_data['accountId'] ) . ", " ) .
+      	( ( !isset( $_data['id'        ]))?'' : 		  intval(		           	 $_data['id'        ] ) . ", " ) .
+        ( ( !isset( $_data['accountId']))?'' :        intval(                $_data['accountId' ] ) . ", " ) .
         ( ( !isset( $_data['name'      ]))?'' : "'" . \Strings::DBTextClean( $_data['name'      ]	) . "'," ) .
         ( ( !isset( $_data['position'  ]))?'' :       intval(                $_data['position'  ] ) . ", " ) .
         ( ( !isset( $_data['status'    ]))?'' : "'" . \Strings::DBTextClean( $_data['status'    ]	) . "'," ) .
         ( ( !isset( $_data['state'     ]))?'' : "'" . \Strings::DBTextClean( $_data['state'     ]	) . "'," ) .
-              									 		 		             "'" . \Strings::DBCurrentDate()						  			  . "',"   .
-                                                     "'" . \Strings::DBCurrentDate()						  			  . "' "   .
+              									 		 		        "'" . \Strings::DBCurrentDate()						  			  . "',"   .
+                                                "'" . \Strings::DBCurrentDate()						  			  . "' "   .
       " ) " .
       ((isset($_data['id'] ) && intval( $_data['id'] ) > 0 ) ?
       " ON DUPLICATE KEY UPDATE ".
@@ -86,7 +86,7 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
       	( ( !isset( $_data['status'       ]))?'' : "status = '" .       \Strings::DBTextClean( $_data['status'    ] ) . "'," ) .
       	( ( !isset( $_data['state'        ]))?'' : "state = '" .        \Strings::DBTextClean( $_data['state'     ] ) . "'," ) .
       	( ( !isset( $_data['position'     ]))?'' : "position = '" .     intval(                $_data['position'  ] ) . "'," ) .
-        ( ( !isset( $_data['date_updated']))?'' : "date_updated = '" . \Strings::DBCurrentDate()                      . "'," ) .
+        ( ( !isset( $_data['date_updated' ]))?'' : "date_updated = '" . \Strings::DBCurrentDate()                      . "'," ) .
         "id = " . ((isset($_data['id'] ) && intval( $_data['id'] ) > 0 ) ? intval( $_data['id'] ) : "LAST_INSERT_ID( id )" ) . ";"
         : ';'
       );
@@ -114,7 +114,7 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
   /**
    * Read a specific account Todo.
    *
-   * @param {array} $_data Data to filter to the database table to read, ex: [
+   * @param {array} $_data Data to filter to the database table to read, Ex: [
    *  'accountId' => 123,
    *  'state' => 'ACTIVE'
    * ]
@@ -131,16 +131,16 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
       " AND state = '" . \Strings::DBTextClean( $_data['state'] ) . "' " .
       " ORDER BY position, id ASC;";
   	  if ( is_callable([ self::$DB, 'prepare']) ) {
-  	    try {
-            $query = self::$DB->prepare( self::$sql );
-            if ( !$query) { self::error( __CLASS__, __METHOD__, self::$sql ); }
-            $query->execute();
-            for ( $i = 0 ; $row = $query->fetch() ; $i++ ) {
-              $_a = self::_list( $_a, $row, $i );
-            }
-          } catch ( \PDOException $err ) {
-            \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql );
+	      try {
+          $query = self::$DB->prepare( self::$sql );
+          if ( !$query) { self::error( __CLASS__, __METHOD__, self::$sql); }
+          $query->execute();
+          for ( $i = 0 ; $row = $query->fetch() ; $i++ ) {
+            $_a = self::_list( $_a, $row, $i );
           }
+        } catch ( \PDOException $err ) {
+          \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql);
+        }
   	  }
     }
     return $_a;
@@ -156,15 +156,15 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
    	  " WHERE accountId = '". intval( $_data['accountId'] ) . "' ".
       " AND state = '" . \Strings::DBTextClean( $_data['state'] ) . "' " .
       ";";
-  	  if ( is_callable([ self::$DB, 'prepare']) ) {
+  	  if (is_callable([ self::$DB, 'prepare'])) {
   	    try {
           $query = self::$DB->prepare( self::$sql );
-          if ( !$query) { self::error( __CLASS__, __METHOD__, self::$sql ); }
+          if ( !$query) { self::error( __CLASS__, __METHOD__, self::$sql); }
           $query->execute();
           $result_ = $query->fetch();
-          $_a = ((isset($result_['count'] ) && !empty( $result_['count']))?intval( $result_['count'] ) : 0 );
+          $_a = ((isset($result_['count'] ) && !empty( $result_['count']))?intval( $result_['count']) : 0);
         } catch ( \PDOException $err ) {
-          \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql );
+          \Stripe\Controller::error( __CLASS__, __METHOD__, __LINE__, $err->getMessage(), self::$sql);
         }
   	  }
     }
@@ -218,7 +218,7 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
         " UPDATE ". DB_BASE . "." . self::TABLE .
         " SET state = '" .    self::STATE_DELETED . "' " .
         " WHERE id = " .      intval( $_data['id'        ] ) .
-        " AND accountId = " . intval( $_data['accountId'] ) .
+        " AND accountId = " . intval( $_data['accountId' ] ) .
         ";";
 
         if ( is_callable([ self::$DB, 'prepare']) === TRUE )
@@ -258,9 +258,9 @@ final class Todolist_model extends \Stripe\Model implements \Stripe\iCRUDS
         'name'        => ((isset( $row['name'        ]))? $row['name'         ] : NULL ),
         'position'    => ((isset( $row['position'    ]))? $row['position'     ] : NULL ),
         'status'      => ((isset( $row['status'      ]))? $row['status'       ] : NULL ),
-        'state'       => ((isset( $row['state' 		  ]))? $row['state'        ] : NULL ),
-        'date_created'=> ((isset( $row['date_created']))? $row['date_created'] : NULL ),
-        'date_updated'=> ((isset( $row['date_updated']))? $row['date_updated'] : NULL )
+        'state'       => ((isset( $row['state' 		   ]))? $row['state'        ] : NULL ),
+        'date_created'=> ((isset( $row['date_created']))? $row['date_created' ] : NULL ),
+        'date_updated'=> ((isset( $row['date_updated']))? $row['date_updated' ] : NULL )
       ]);
     }
     return $_a;

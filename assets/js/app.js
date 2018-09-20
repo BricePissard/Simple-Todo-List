@@ -101,8 +101,8 @@ jQuery&&jQuery(function($) {
 
 			  $(this).toggles({
 				  text: {
-on	: on,
-off	: off
+		on	: on,
+		off	: off
 				  },
 					on			: checked,
 					checkbox: checkbox,
@@ -343,9 +343,14 @@ off	: off
 			$('.signup').off('click');
 			$('.signup').on('click',stripe.signup_CLICK);
 
-			$('.bt-signin').off('click'); $('.bt-signin').on('click',stripe.slide_logger_form);
-			$('.bt-login').off('click'); $('.bt-login').on('click',stripe.slide_logger_form);
-			$('.bt-forgot').off('click'); $('.bt-forgot').on('click',stripe.slide_logger_form);
+			$('.bt-signin').off('click');
+			$('.bt-signin').on('click',stripe.slide_logger_form);
+
+			$('.bt-login').off('click');
+			$('.bt-login').on('click',stripe.slide_logger_form);
+
+			$('.bt-forgot').off('click');
+			$('.bt-forgot').on('click',stripe.slide_logger_form);
 
 			$('.form-signin').submit(stripe.on_logger_form_SUBMIT);
 			$('.form-login').submit(stripe.on_logger_form_SUBMIT);
