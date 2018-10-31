@@ -26,8 +26,8 @@ final class Emails_model extends \Stripe\Model
 	public static function send( $to, $subject, $message, $from = NULL, $from_name = NULL, $file_name = '', $file_data = NULL, $file_type = 'application/octet-stream' )
 	{
 		if (class_exists('PHPmailer')) {
-			$from 		 = ( (!isset( $from      ) || empty( $from     ))?'noreply@robby.ai' : $from );
-			$from_name = ( (!isset( $from_name ) || empty( $from_name))?'noreply@robby.ai' : $from_name );
+			$from 		 = ( ( !isset( $from      ) || empty( $from     ))?'noreply@robby.ai' : $from);
+			$from_name = ( ( !isset( $from_name ) || empty( $from_name))?'noreply@robby.ai' : $from_name);
 
 			$mail = new \PHPmailer();
       $mail->IsSendmail();
